@@ -49,32 +49,6 @@ The JJWEBSERVICES website itself is built using a modern, efficient, and reliabl
 
 ---
 
-## 🚀 Getting Started (Local Development)
-
-This section is for anyone who wants to run this project locally.
-
-### Prerequisites
-
-You will need the following installed on your machine:
-* [e.g., Node.js]
-* [e.g., npm or yarn]
-
-### Installation Steps
-
-1.  **Install dependencies:**
-    ```bash
-    npm install
-    # or yarn install
-    ```
-2.  **Run the application locally:**
-    ```bash
-    npm run dev
-    # or yarn dev
-    ```
-3.  The site should now be running at `http://localhost:[PORT NUMBER]`.
-
----
-
 ## 📬 Contact & Portfolio
 
 Ready to start a project? I'd love to hear from you.
@@ -89,6 +63,6 @@ Feel free to explore the code to see the quality and structure I bring to all my
 
 ## ©️ License
 
-[Specify your license, e.g., MIT, ISC]
+[MIT]
 
 *For information on hiring services, please visit the official **JJWEBSERVICES** website.*
