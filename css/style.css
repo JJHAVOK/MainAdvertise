@@ -1,87 +1,35 @@
-/* Custom Stylesheet (style.css) */
+.container-fluid { 
 
-/* --- General Enhancements --- */
-
-/* Add some vertical space between main content rows */
-.row {
-    margin-bottom: 20px;
 }
 
-/* Ensure the address/contact info looks clean and distinct */
-address {
-    padding: 15px;
-    border-left: 5px solid #007bff; /* Primary color accent */
-    background-color: #f8f9fa; /* Light background */
-    margin-top: 10px;
+.container-fluid .row { 
+
 }
 
-/* Add some padding to the main content container to prevent content touching the edges */
-.container-fluid {
-    padding-left: 30px;
-    padding-right: 30px;
+.container-fluid .row .col-md-12 { 
+
 }
 
-/* --- Navigation & Header --- */
+.container-fluid .row .col-md-12 .row { 
 
-/* Customize the Navbar background for a slightly darker look */
-.navbar.bg-light {
-    background-color: #e9ecef !important;
-    border-bottom: 3px solid #dee2e6;
-    margin-bottom: 20px; /* Space below the navbar */
 }
 
-/* Style for the two success buttons in the header area */
-.row:nth-child(2) .btn-success {
-    width: 100%; /* Make them fill their columns nicely */
+.container-fluid .row .col-md-12 .row .col-md-4 { 
+
 }
 
+.container-fluid .row .col-md-12 .row .col-md-4 address { 
 
-/* --- Jumbotron/Hero Unit --- */
-
-/* Give the jumbotron (hero unit) a subtle shadow and centered look */
-.jumbotron {
-    background-color: #f0f8ff; /* A lighter, softer blue tint */
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    padding: 3rem 2rem; /* Ensure good internal padding */
-    margin-bottom: 40px;
-}
-.jumbotron h2 {
-    color: #0056b3; /* Darker blue heading */
 }
 
-/* --- Lists and Footer Area --- */
+.container-fluid .row .col-md-12 .row .col-md-4 address strong { 
 
-/* Style the lists (the three columns of ul/li) */
-.col-md-4 ul {
-    list-style: none; /* Remove bullet points */
-    padding-left: 0;
-}
-.col-md-4 ul .list-item {
-    border-bottom: 1px dashed #ced4da; /* Dotted line separation */
-    padding: 5px 0;
 }
 
-/* Add a simple styled footer section (assuming the last .row is the footer) */
-.container-fluid > .row:last-child {
-    background-color: #343a40; /* Dark background */
-    color: #f8f9fa; /* Light text */
-    padding: 30px 0;
-    margin-top: 40px;
-    border-top: 5px solid #ffc107; /* Yellow accent line */
-    text-align: center;
-}
-.container-fluid > .row:last-child h3 {
-    color: #ffc107; /* Highlighted text */
+.container-fluid .row .col-md-12 .row .col-md-4 address br { 
+
 }
 
-/* --- Blockquotes --- */
+.container-fluid .row .col-md-12 .row .col-md-4 address abbr { 
 
-/* Enhance blockquote visibility */
-.blockquote {
-    border-left: 5px solid #6c757d;
-    padding-left: 20px;
-    margin-top: 15px;
-    font-style: italic;
 }
