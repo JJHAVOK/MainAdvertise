@@ -54,6 +54,28 @@ address strong {
   margin-bottom: 0.5rem;
 }
 
+/* Phone Section */
+phone {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  border-left: 4px solid var(--primary-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+phone:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+}
+
+phone strong {
+  color: var(--primary-color);
+  font-size: 1.3rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
 /* Buttons */
 .btn {
   border-radius: 12px;
