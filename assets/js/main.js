@@ -1,26 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Sticky Navigation Enhancement
+    // 1. Sticky Navigation Enhancement (Using the 'scrolled' class)
     const header = document.querySelector('.header');
 
     window.addEventListener('scroll', () => {
-        // Add a class when scrolling to subtly change the header appearance (e.g., box shadow)
+        // Add a class when scrolling to subtly change the header appearance 
         if (window.scrollY > 50) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
         }
     });
-    
-    // Add CSS for the 'scrolled' class to your style.css if desired:
-    /*
-    .header.scrolled {
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        padding: 10px 0; // Example: shrink the header a little
-    }
-    .header.scrolled .header .container {
-        padding: 10px 0;
-    }
-    */
 
 
     // 2. Scroll to Top Button Functionality
