@@ -28,106 +28,26 @@
 <body>
 
     <!--==================== HEADER ====================-->
-      <header class="header" id="header">
-         <nav class="nav container">
-            <a href="#" class="nav__logo">Logo</a>
-
-            <div class="nav__menu" id="nav-menu">
-               <ul class="nav__list">
-                  <li class="nav__item">
-                     <a href="#" class="nav__link">Home</a>
-                  </li>
-
-                  <li class="nav__item">
-                     <a href="#" class="nav__link">About Us</a>
-                  </li>
-
-                  <li class="nav__item">
-                     <a href="#" class="nav__link">Services</a>
-                  </li>
-
-                  <li class="nav__item">
-                     <a href="#" class="nav__link">Featured</a>
-                  </li>
-
-                  <li class="nav__item">
-                     <a href="#" class="nav__link">Contact Me</a>
-                  </li>
-               </ul>
-
-               <!-- Close button -->
-               <div class="nav__close" id="nav-close">
-                  <i class="ri-close-line"></i>
-               </div>
-            </div>
-
-            <div class="nav__actions">
-               <!-- Search button -->
-               <i class="ri-search-line nav__search" id="search-btn"></i>
-
-               <!-- Login button -->
-               <i class="ri-user-line nav__login" id="login-btn"></i>
-
-               <!-- Toggle button -->
-               <div class="nav__toggle" id="nav-toggle">
-                  <i class="ri-menu-line"></i>
-               </div>
-            </div>
-         </nav>
-      </header>
-
-      <!--==================== SEARCH ====================-->
-      <div class="search" id="search">
-         <form action="" class="search__form">
-            <i class="ri-search-line search__icon"></i>
-            <input type="search" placeholder="What are you looking for?" class="search__input">
-         </form>
-
-         <i class="ri-close-line search__close" id="search-close"></i>
-      </div>
-
-      <!--==================== LOGIN ====================-->
-      <div class="login" id="login">
-         <form action="" class="login__form">
-            <h2 class="login__title">Log In</h2>
-            
-            <div class="login__group">
-               <div>
-                  <label for="email" class="login__label">Email</label>
-                  <input type="email" placeholder="Write your email" id="email" class="login__input">
-               </div>
-               
-               <div>
-                  <label for="password" class="login__label">Password</label>
-                  <input type="password" placeholder="Enter your password" id="password" class="login__input">
-               </div>
-            </div>
-
-            <div>
-               <p class="login__signup">
-                  You do not have an account? <a href="#">Sign up</a>
-               </p>
-   
-               <a href="#" class="login__forgot">
-                  You forgot your password
-               </a>
-   
-               <button type="submit" class="login__button">Log In</button>
-            </div>
-         </form>
-
-         <i class="ri-close-line login__close" id="login-close"></i>
-         <div class="container">
+      <header class="header">
+        <div class="container">
             <a href="#" class="logo">AURA DEV.</a>
             <nav class="nav">
-                <a href="#expertise">Expertise</a>
-                <a href="#stack">Tech Stack</a>
-                <a href="#portfolio">Case Studies</a>
-                <a href="#contact" class="btn btn-nav">Start Project</a>
+                <div class="nav-main-links">
+                    <a href="#" class="active">Home</a>
+                    <a href="about.html">About Us</a>
+                    <a href="projects.html">Projects</a>
+                    <a href="contact.html">Contact Page</a>
+                </div>
+                
+                <div class="nav-section-links">
+                    <a href="#expertise">Expertise</a>
+                    <a href="#stack">Tech Stack</a>
+                    <a href="#portfolio">Case Studies</a>
+                    <a href="#contact" class="btn btn-nav">Start Project</a>
+                </div>
             </nav>
         </div>
-      </div>
-
+    </header>
 
     <section class="hero">
         <div class="container">
@@ -165,6 +85,11 @@
                     <h3>Industry Versatility</h3>
                     <p>Our solutions adapt to **any sector**—from SaaS to Logistics—ensuring compliance and market-specific features.</p>
                 </div>
+                <div class="card">
+                    <i class="icon">🔒</i>
+                    <h3>Security & Compliance</h3>
+                    <p>Implementing robust security protocols and industry-specific compliance (e.g., HIPAA, GDPR) from day one.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -174,21 +99,21 @@
             <h2 class="section-title">Our Core Technologies</h2>
 
             <div class="stack-rows">
-                <div class="stack-row-top">
+                <div class="stack-row-top-frameworks">
+                    <div class="stack-item item-large">
+                        <i class="stack-icon stack-icon-front">HTML5 / CSS3 / JavaScript / Bootstrap</i>
+                        <p>Core Frontend Development</p>
+                    </div>
                     <div class="stack-item item-large">
                         <i class="stack-icon">React/Vue</i>
                         <p>Modern Frontend Frameworks</p>
                     </div>
-                    <div class="stack-item item-large">
-                        <i class="stack-icon">Node.js/Python</i>
-                        <p>High-Performance Backends</p>
-                    </div>
                 </div>
 
-                <div class="stack-row-bottom">
+                <div class="stack-row-bottom-infra">
                     <div class="stack-item">
-                        <i class="stack-icon stack-icon-front">HTML5 / CSS3 / JS / Bootstrap</i>
-                        <p>Core Frontend Development</p>
+                        <i class="stack-icon">Node.js/Python</i>
+                        <p>High-Performance Backends</p>
                     </div>
                     <div class="stack-item">
                         <i class="stack-icon">PostgreSQL/Mongo</i>
@@ -257,43 +182,50 @@
     </section>
 
     <footer class="main-footer">
-        <div class="container footer-grid">
+        <div class="container">
             
-            <div class="footer-col footer-nav">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="#expertise">Our Services</a></li>
-                    <li><a href="#stack">Technology Stack</a></li>
-                    <li><a href="#portfolio">Our Work</a></li>
-                    <li><a href="#contact">Contact Us</a></li>
-                </ul>
-            </div>
+            <div class="footer-grid">
+                
+                <div class="footer-col footer-nav">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#expertise">Our Services</a></li>
+                        <li><a href="#stack">Technology Stack</a></li>
+                        <li><a href="#portfolio">Our Work</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
 
-            <div class="footer-col footer-testimonial">
-                <h3>Client Testimonial</h3>
-                <p class="quote">"AURA DEV engineered a system that reduced our processing time by 40%. True full-stack expertise."</p>
-                <p class="client">- Sarah K., CTO of Nexus Corp</p>
-            </div>
+                <div class="footer-col footer-testimonial">
+                    <h3>Client Testimonial</h3>
+                    <p class="quote">"AURA DEV engineered a system that reduced our processing time by 40%. True full-stack expertise."</p>
+                    <p class="client">- Sarah K., CTO of Nexus Corp</p>
+                </div>
 
-            <div class="footer-col footer-legal">
-                <h3>Legal & Resources</h3>
-                <ul>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms and Conditions</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Sitemap</a></li>
-                </ul>
-            </div>
+                <div class="footer-col footer-legal">
+                    <h3>Legal & Resources</h3>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms and Conditions</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Sitemap</a></li>
+                    </ul>
+                </div>
 
-            <div class="footer-col footer-search">
-                <h3>Find Information</h3>
-                <form class="footer-search-form">
-                    <input type="search" placeholder="Search the site...">
-                    <button type="submit">Go</button>
-                </form>
-                <p class="copyright-info">© 2025 AURA DEV.<br>All rights reserved.</p>
+                <div class="footer-col footer-search">
+                    <h3>Find Information</h3>
+                    <form class="footer-search-form">
+                        <input type="search" placeholder="Search the site...">
+                        <button type="submit">Go</button>
+                    </form>
+                </div>
             </div>
+        </div>
 
+        <div class="footer-copyright-row">
+            <div class="container">
+                <p class="copyright-info">© 2025 AURA DEV. All rights reserved. | Full-Stack Custom Development Experts.</p>
+            </div>
         </div>
     </footer>
 
