@@ -17,18 +17,45 @@
     --font-weight-medium: 600;
     --font-weight-bold: 800;
 }
-/* ... (Keep existing global and utility styling) ... */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    line-height: 1.6;
+    color: var(--color-text);
+    background-color: var(--color-white);
+}
+
+h1, h2, h3 {
+    line-height: 1.2;
+    color: var(--color-dark-bg);
+}
+
+/* --- Utility Classes --- */
 .container {
     width: 90%;
     max-width: 1300px;
     margin: 0 auto;
 }
+.section-padding {
+    padding: 100px 0;
+}
+
 
 /* --- 0. Top Contact Bar (New Styling) --- */
 .top-bar {
     background-color: var(--color-dark-bg);
     color: var(--color-white);
-    padding: 8px 0; 
+    padding: 8px 0; /* Creates the 30px height visually */
     font-size: 0.85rem;
 }
 
@@ -40,11 +67,12 @@
     text-align: center;
 }
 
-.top-bar-left, .top-bar-center {
+.top-bar-left, .top-bar-center, .top-bar-right {
     text-align: left;
 }
+
 .top-bar-center {
-    text-align: center; /* Center column content */
+    text-align: center;
 }
 
 .top-bar-right {
@@ -65,21 +93,26 @@
     margin-right: 8px;
     color: var(--color-accent);
 }
-
-/* --- 1. Header & Navigation (Focus and 3-Zone Layout) --- */
+/* --- 1. Header & Navigation (Improved Z-index and Structure) --- */
 .header {
     background-color: var(--color-white);
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 1000; /* Highest Z-index for being in front of everything */
     transition: padding 0.3s, box-shadow 0.3s;
 }
 
-.header-content {
+/* JavaScript class for scrolled state */
+.header.scrolled {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    padding: 5px 0;
+}
+
+.header .container {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Vertically centers the logo, nav column, and button */
+    align-items: center;
     padding: 15px 0;
 }
 
@@ -91,29 +124,23 @@
     letter-spacing: -0.5px;
 }
 
-/* Navigation Links Wrapper (The center column containing main and sub links) */
-.nav-column {
+.nav {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    flex-grow: 1; /* Allows it to take up the space between logo and button */
-    padding: 0 40px; /* Space from the edges */
+    align-items: flex-end; 
 }
 
-/* Main Navigation Links (Primary Focus) */
+/* Main Navigation Links (More noticeable) */
 .nav-main-links {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
+    margin-bottom: 5px; 
 }
 
 .nav-main-links a {
     color: var(--color-text);
     text-decoration: none;
-    margin: 0 18px;
-    font-weight: var(--font-weight-bold); /* Bolder */
-    font-size: 1.05rem; 
+    margin-left: 30px;
+    font-weight: var(--font-weight-bold); /* Bolder for main links */
+    font-size: 1rem; /* Slightly larger/more noticeable text */
     transition: color 0.3s;
     padding: 5px 0;
     position: relative;
@@ -124,85 +151,74 @@
     color: var(--color-primary);
 }
 
-/* Separator/Link Break */
-.nav-separator {
-    width: 80%; /* Shorter line below the main menu */
-    height: 1px;
-    background-color: var(--color-light-bg);
-    margin: 4px 0;
+.nav-main-links a.active::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-primary);
+    position: absolute;
+    bottom: -5px;
+    left: 0;
 }
 
-/* Section Links (Discreet, smallest text, breadcrumb format) */
+/* Separator/Link Break */
+.nav-separator {
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-light-bg);
+    margin: 5px 0;
+}
+
+/* Section Links (Smaller, breadcrumb format, out of the way) */
 .nav-section-links {
     display: flex;
     align-items: center;
-    padding: 2px 0;
-    text-align: center;
+    padding: 5px 0;
 }
 
-.nav-section-links a {
+.nav-section-links a:not(.btn-start-project) {
     color: var(--color-text);
     text-decoration: none;
-    font-size: 0.7rem; /* Even smaller text */
-    opacity: 0.5; /* Very subtle */
+    font-size: 0.75rem; /* Small text */
+    opacity: 0.6;
     font-weight: var(--font-weight-regular);
     transition: opacity 0.3s, color 0.3s;
-    /* Removed margin here as the slash will handle spacing */
 }
 
-.nav-section-links a:hover {
+.nav-section-links a:not(.btn-start-project):hover {
     opacity: 1;
     color: var(--color-primary);
 }
 
-/* New Separator Styling */
-.nav-separator-slash {
-    color: var(--color-text);
-    opacity: 0.3;
-    font-size: 0.7rem;
-    margin: 0 3px; /* Minimal spacing around the slash */
-}
-
 /* Breadcrumb-style separators for section links */
-.nav-section-links a::after {
+.nav-section-links a:not(.btn-start-project)::after {
     content: ' / ';
     color: var(--color-text);
     opacity: 0.3;
-    margin: 0 3px;
+    margin: 0 5px;
 }
 
-/* Remove the separator after the last link */
-.nav-section-links a:last-child::after {
+/* Remove the separator before the "Start Project" button */
+.nav-section-links a:nth-last-child(2)::after {
     content: '';
     margin: 0;
 }
 
-/* Start Project Button (Far Right, isolated styling) */
+/* Start Project Button (Smaller, white text, primary background) */
 .btn-start-project {
-    /* Base button styling */
-    display: inline-block;
-    padding: 8px 18px; /* Slightly larger than before, but smaller than primary CTA */
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: var(--font-weight-medium);
-    transition: all 0.3s ease;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    
-    /* Specific styling */
     background-color: var(--color-primary);
     color: var(--color-white);
-    font-size: 0.85rem; 
-    white-space: nowrap; /* Keeps button from wrapping */
+    padding: 6px 15px; /* Smaller padding */
+    font-size: 0.8rem; /* Smaller font size */
+    margin-left: 15px;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .btn-start-project:hover {
     background-color: var(--color-primary-dark);
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
-
 
 /* --- 10. Responsive Design (Media Queries) --- */
 
@@ -211,38 +227,40 @@
     .top-bar {
         display: none;
     }
-    
-    .header-content {
+    .header .container {
         padding: 10px 0;
     }
-    
-    /* On tablet, switch to a simple row menu */
-    .nav-column {
+
+    /* Keep main links centered and hide section links */
+    .nav {
         flex-direction: row;
-        flex-grow: 1;
-        justify-content: center;
-        padding: 0 20px;
+        width: auto;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .nav-main-links {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
     }
     .nav-section-links, .nav-separator {
-        display: none; /* Hide sub-links and separator on tablet */
+        display: none; 
     }
-    .nav-main-links a {
-        margin: 0 15px;
-        font-size: 1rem;
+    .btn-start-project {
+        display: inline-block; /* Ensure button is visible */
+        margin-left: 20px;
     }
 }
 
 @media (max-width: 768px) {
-    .header-content {
+    .header .container {
         flex-direction: column;
-        align-items: center;
         padding: 15px 0;
     }
     .logo {
         margin-bottom: 10px;
     }
-    .nav-column {
-        padding: 0;
+    .nav {
         width: 100%;
     }
     .nav-main-links {
@@ -252,12 +270,10 @@
     .nav-main-links a {
         margin: 5px 10px;
     }
-    /* Hide button on smallest screens to save space and put focus on main links */
     .btn-start-project {
-        display: none; 
+        display: none; /* Hide button on smallest screens to save space */
     }
 }
-/* ... rest of the CSS for other sections remains unchanged ... */
 
 /* Remove the separator after the last breadcrumb link before the button */
 .nav-section-links a:nth-last-child(2)::after {
@@ -306,18 +322,11 @@
     font-weight: 300;
 }
 
-/* --- 3. Breadcrumb (FULL-WIDTH BACKGROUND) --- */
+/* --- 4. Breadcrumb (Below Hero) --- */
 .breadcrumb-container {
     background-color: var(--color-light-bg);
-    /* padding: 15px 0; <-- REMOVED padding from the container */
+    padding: 15px 0;
     border-bottom: 1px solid #e0e0e0;
-    width: 100%; /* Ensure full width */
-}
-
-/* This new div will hold the content and apply the internal padding */
-.breadcrumb-inner-content {
-    /* Re-add the desired padding to the inner container for the text */
-    padding: 15px 0; 
 }
 
 .breadcrumb a {
