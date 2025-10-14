@@ -147,11 +147,20 @@
     opacity: 0.5; /* Very subtle */
     font-weight: var(--font-weight-regular);
     transition: opacity 0.3s, color 0.3s;
+    /* Removed margin here as the slash will handle spacing */
 }
 
 .nav-section-links a:hover {
     opacity: 1;
     color: var(--color-primary);
+}
+
+/* New Separator Styling */
+.nav-separator-slash {
+    color: var(--color-text);
+    opacity: 0.3;
+    font-size: 0.7rem;
+    margin: 0 3px; /* Minimal spacing around the slash */
 }
 
 /* Breadcrumb-style separators for section links */
@@ -297,11 +306,18 @@
     font-weight: 300;
 }
 
-/* --- 4. Breadcrumb (Below Hero) --- */
+/* --- 3. Breadcrumb (FULL-WIDTH BACKGROUND) --- */
 .breadcrumb-container {
     background-color: var(--color-light-bg);
-    padding: 15px 0;
+    /* padding: 15px 0; <-- REMOVED padding from the container */
     border-bottom: 1px solid #e0e0e0;
+    width: 100%; /* Ensure full width */
+}
+
+/* This new div will hold the content and apply the internal padding */
+.breadcrumb-inner-content {
+    /* Re-add the desired padding to the inner container for the text */
+    padding: 15px 0; 
 }
 
 .breadcrumb a {
