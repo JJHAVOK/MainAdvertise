@@ -1,133 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Custom Web Development | Full-Stack Solutions for Any Industry</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
 
-<!--=============== REMIXICONS ===============-->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css">
+    <header class="header">
+        <div class="container">
+            <a href="#" class="logo">AURA DEV.</a>
+            <nav class="nav">
+                <a href="#expertise">Expertise</a>
+                <a href="#stack">Tech Stack</a>
+                <a href="#portfolio">Case Studies</a>
+                <a href="#contact" class="btn btn-nav">Start Project</a>
+            </nav>
+        </div>
+    </header>
 
-
-<!--=============== CSS ===============-->
-      <link rel="stylesheet" href="assets/css/styles.css">
-      <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-
-
-    <title>Web Services</title>
-
-    <meta name="description" content="Source code created by JJHAVOK">
-    <meta name="author" content="JJHAVOK!">
-
-  </head>
-  <body>
-    <!--==================== HEADER ====================-->
-      <header class="header" id="header">
-         <nav class="nav container">
-            <a href="#" class="nav__logo">Logo</a>
-
-            <div class="nav__menu" id="nav-menu">
-               <ul class="nav__list">
-                  <li class="nav__item">
-                     <a href="#" class="nav__link">Home</a>
-                  </li>
-
-                  <li class="nav__item">
-                     <a href="#" class="nav__link">About Us</a>
-                  </li>
-
-                  <li class="nav__item">
-                     <a href="#" class="nav__link">Services</a>
-                  </li>
-
-                  <li class="nav__item">
-                     <a href="#" class="nav__link">Featured</a>
-                  </li>
-
-                  <li class="nav__item">
-                     <a href="#" class="nav__link">Contact Me</a>
-                  </li>
-               </ul>
-
-               <!-- Close button -->
-               <div class="nav__close" id="nav-close">
-                  <i class="ri-close-line"></i>
-               </div>
-            </div>
-
-            <div class="nav__actions">
-               <!-- Search button -->
-               <i class="ri-search-line nav__search" id="search-btn"></i>
-
-               <!-- Login button -->
-               <i class="ri-user-line nav__login" id="login-btn"></i>
-
-               <!-- Toggle button -->
-               <div class="nav__toggle" id="nav-toggle">
-                  <i class="ri-menu-line"></i>
-               </div>
-            </div>
-         </nav>
-      </header>
-
-      <!--==================== SEARCH ====================-->
-      <div class="search" id="search">
-         <form action="" class="search__form">
-            <i class="ri-search-line search__icon"></i>
-            <input type="search" placeholder="What are you looking for?" class="search__input">
-         </form>
-
-         <i class="ri-close-line search__close" id="search-close"></i>
-      </div>
-
-      <!--==================== LOGIN ====================-->
-      <div class="login" id="login">
-         <form action="" class="login__form">
-            <h2 class="login__title">Log In</h2>
-            
-            <div class="login__group">
-               <div>
-                  <label for="email" class="login__label">Email</label>
-                  <input type="email" placeholder="Write your email" id="email" class="login__input">
-               </div>
-               
-               <div>
-                  <label for="password" class="login__label">Password</label>
-                  <input type="password" placeholder="Enter your password" id="password" class="login__input">
-               </div>
-            </div>
-
-            <div>
-               <p class="login__signup">
-                  You do not have an account? <a href="#">Sign up</a>
-               </p>
-   
-               <a href="#" class="login__forgot">
-                  You forgot your password
-               </a>
-   
-               <button type="submit" class="login__button">Log In</button>
-            </div>
-         </form>
-
-         <i class="ri-close-line login__close" id="login-close"></i>
-      </div>
-
-      <!--==================== MAIN ====================-->
-      <main class="main">
-         <img src="assets/img/bg-image.png" alt="image" class="main__bg">
-<section class="hero">
+    <section class="hero">
         <div class="container">
             <span class="tagline">FULL-STACK POWER. INDUSTRY-AGNOSTIC.</span>
             <h1>Engineered, **Custom Digital Platforms** for Unmatched Performance.</h1>
-            <p>From dynamic **FinTech** solutions to high-volume **E-commerce** and complex **Healthcare** portals—we build the entire architecture, front-to-back.</p>
+            <p>From dynamic FinTech solutions to high-volume E-commerce—we engineer the entire architecture, front-to-back.</p>
             <a href="#contact" class="btn btn-primary">Book a Technical Deep Dive</a>
         </div>
     </section>
 
+    <div class="breadcrumb-container">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/">Home</a> / <a href="#expertise">Services</a> / Custom Full-Stack
+            </div>
+        </div>
+    </div>
+
     <section id="expertise" class="difference section-padding">
         <div class="container">
-            <h2>The Full-Stack Difference</h2>
+            <h2 class="section-title">The Full-Stack Difference</h2>
             <div class="difference-grid">
                 <div class="card">
                     <i class="icon">⬡</i>
@@ -150,23 +63,33 @@
 
     <section id="stack" class="stack section-padding">
         <div class="container">
-            <h2>Our Core Technologies</h2>
-            <div class="stack-grid">
-                <div class="stack-item">
-                    <i class="stack-icon">React/Vue</i>
-                    <p>Modern Frontend Frameworks</p>
+            <h2 class="section-title">Our Core Technologies</h2>
+
+            <div class="stack-rows">
+                <div class="stack-row-top">
+                    <div class="stack-item item-large">
+                        <i class="stack-icon">React/Vue</i>
+                        <p>Modern Frontend Frameworks</p>
+                    </div>
+                    <div class="stack-item item-large">
+                        <i class="stack-icon">Node.js/Python</i>
+                        <p>High-Performance Backends</p>
+                    </div>
                 </div>
-                <div class="stack-item">
-                    <i class="stack-icon">Node.js/Python</i>
-                    <p>High-Performance Backends</p>
-                </div>
-                <div class="stack-item">
-                    <i class="stack-icon">PostgreSQL/Mongo</i>
-                    <p>Scalable Database Solutions</p>
-                </div>
-                <div class="stack-item">
-                    <i class="stack-icon">AWS/Azure</i>
-                    <p>Reliable Cloud Infrastructure</p>
+
+                <div class="stack-row-bottom">
+                    <div class="stack-item">
+                        <i class="stack-icon stack-icon-front">HTML5 / CSS3 / JS / Bootstrap</i>
+                        <p>Core Frontend Development</p>
+                    </div>
+                    <div class="stack-item">
+                        <i class="stack-icon">PostgreSQL/Mongo</i>
+                        <p>Scalable Database Solutions</p>
+                    </div>
+                    <div class="stack-item">
+                        <i class="stack-icon">AWS/Azure</i>
+                        <p>Reliable Cloud Infrastructure</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -174,7 +97,7 @@
 
     <section id="portfolio" class="portfolio section-padding">
         <div class="container">
-            <h2>Case Studies & Results</h2>
+            <h2 class="section-title">Case Studies & Results</h2>
             <div class="portfolio-grid">
                 <div class="portfolio-item">
                     <span class="industry-tag">E-Commerce</span>
@@ -187,6 +110,18 @@
                 <div class="portfolio-item">
                     <span class="industry-tag">Healthcare</span>
                     <h3>HIPAA-Compliant Portal</h3>
+                </div>
+                <div class="portfolio-item item-new-1">
+                    <span class="industry-tag">SaaS</span>
+                    <h3>Subscription Management Portal</h3>
+                </div>
+                <div class="portfolio-item item-new-2">
+                    <span class="industry-tag">Logistics</span>
+                    <h3>Real-Time Tracking System</h3>
+                </div>
+                <div class="portfolio-item item-new-3">
+                    <span class="industry-tag">Education</span>
+                    <h3>Interactive E-Learning Platform</h3>
                 </div>
             </div>
             <a href="#" class="btn btn-secondary">View Complete Success Stories</a>
@@ -213,16 +148,46 @@
         </div>
     </section>
 
-    </main>
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            
+            <div class="footer-col footer-nav">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#expertise">Our Services</a></li>
+                    <li><a href="#stack">Technology Stack</a></li>
+                    <li><a href="#portfolio">Our Work</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </div>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 [Your Company Name]. All rights reserved. | Professional Web Design.</p>
+            <div class="footer-col footer-testimonial">
+                <h3>Client Testimonial</h3>
+                <p class="quote">"AURA DEV engineered a system that reduced our processing time by 40%. True full-stack expertise."</p>
+                <p class="client">- Sarah K., CTO of Nexus Corp</p>
+            </div>
+
+            <div class="footer-col footer-legal">
+                <h3>Legal & Resources</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms and Conditions</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Sitemap</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-search">
+                <h3>Find Information</h3>
+                <form class="footer-search-form">
+                    <input type="search" placeholder="Search the site...">
+                    <button type="submit">Go</button>
+                </form>
+                <p class="copyright-info">© 2025 AURA DEV.<br>All rights reserved.</p>
+            </div>
+
         </div>
     </footer>
 
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/main.js"></script>
-  </body>
+</body>
 </html>
