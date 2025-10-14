@@ -122,7 +122,7 @@ h1, h2, h3 {
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000; /* High Z-index to ensure it is in front of everything */
 }
 
 .header .container {
@@ -143,7 +143,11 @@ h1, h2, h3 {
 .nav {
     display: flex;
     flex-direction: column;
-    align-items: flex-end; /* Align the two navigation rows to the right */
+    align-items: flex-end; 
+}
+
+.nav-main-links {
+    margin-bottom: 5px; /* Space between main links and section links */
 }
 
 .nav-main-links a {
@@ -173,18 +177,17 @@ h1, h2, h3 {
 }
 
 .nav-section-links {
-    margin-top: 5px;
+    /* Breadcrumb-like styling for section links */
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
     border-top: 1px solid var(--color-light-bg);
-    padding-top: 5px;
-    width: 100%;
-    text-align: right;
 }
 
 .nav-section-links a:not(.btn) {
     color: var(--color-text);
     text-decoration: none;
-    margin-left: 20px;
-    font-size: 0.85rem;
+    font-size: 0.8rem; /* Smaller text */
     opacity: 0.7;
     transition: opacity 0.3s, color 0.3s;
 }
@@ -192,6 +195,19 @@ h1, h2, h3 {
 .nav-section-links a:not(.btn):hover {
     opacity: 1;
     color: var(--color-primary);
+}
+
+.nav-section-links a:not(.btn)::after {
+    content: ' / ';
+    color: var(--color-text);
+    opacity: 0.5;
+    margin: 0 8px;
+}
+
+/* Remove the separator after the last breadcrumb link before the button */
+.nav-section-links a:nth-last-child(2)::after {
+    content: '';
+    margin: 0;
 }
 
 
@@ -235,7 +251,7 @@ h1, h2, h3 {
     font-weight: 300;
 }
 
-/* --- 4. Breadcrumb --- */
+/* --- 4. Breadcrumb (Below Hero) --- */
 .breadcrumb-container {
     background-color: var(--color-light-bg);
     padding: 15px 0;
@@ -267,7 +283,6 @@ h1, h2, h3 {
 }
 
 .difference-grid {
-    /* Updated grid for 4 columns on large screens */
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 30px;
@@ -301,7 +316,7 @@ h1, h2, h3 {
     color: var(--color-primary);
 }
 
-/* --- 6. Technology Stack Section (Reorganized) --- */
+/* --- 6. Technology Stack Section (Reorganized Grid Structure) --- */
 .stack {
     background-color: var(--color-light-bg);
     border-top: 1px solid #e0e0e0;
@@ -313,17 +328,17 @@ h1, h2, h3 {
     gap: 30px;
 }
 
-/* Row for the first two (Frontend Core and Frameworks) */
-.stack-row-top-frameworks {
+/* Row 1: Core Front-end & Frameworks (2 columns) - Restored previous layout class */
+.stack-row-top {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for top row */
     gap: 30px;
 }
 
-/* Row for the remaining three (Backend, DB, Infra) */
-.stack-row-bottom-infra {
+/* Row 2: Backend, Database & Infrastructure (3 columns) - Restored previous layout class */
+.stack-row-bottom {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for bottom row */
     gap: 30px;
 }
 
@@ -459,14 +474,14 @@ h1, h2, h3 {
 .main-footer {
     background-color: var(--color-dark-bg);
     color: var(--color-white);
-    padding-top: 60px; /* Only top padding for main grid */
+    padding-top: 60px;
 }
 
 .footer-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 40px;
-    padding-bottom: 40px; /* Padding above the copyright line */
+    padding-bottom: 40px;
 }
 
 .footer-col h3 {
@@ -535,9 +550,9 @@ h1, h2, h3 {
     background-color: var(--color-primary-dark);
 }
 
-/* New Copyright Row Styling */
+/* Copyright Row Styling (Moved below the line break) */
 .footer-copyright-row {
-    background-color: #0d1246; /* Slightly darker shade for the bottom row */
+    background-color: #0d1246; 
     padding: 20px 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
@@ -548,36 +563,67 @@ h1, h2, h3 {
     color: rgba(255, 255, 255, 0.4);
 }
 
+/* --- 10. Scroll to Top Button Styling --- */
+#scrollToTopBtn {
+    display: none; /* Hidden by default */
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 999;
+    border: none;
+    outline: none;
+    background-color: var(--color-accent);
+    color: var(--color-dark-bg);
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 50%;
+    font-size: 18px;
+    line-height: 0; /* Center the arrow */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, opacity 0.3s;
+}
 
-/* --- 10. Responsive Design (Media Queries) --- */
+#scrollToTopBtn:hover {
+    background-color: #ffb74d;
+}
+
+/* --- 11. Responsive Design (Media Queries) --- */
 
 @media (max-width: 1024px) {
     .hero h1 {
         font-size: 3rem;
     }
     .difference-grid {
-        /* 4 cards stacked 2x2 */
         grid-template-columns: repeat(2, 1fr);
     }
-    .stack-row-top-frameworks {
+    .stack-row-top {
         grid-template-columns: 1fr;
     }
-    .footer-grid {
-        /* 4 columns stacked 2x2 */
+    .stack-row-bottom {
         grid-template-columns: repeat(2, 1fr);
     }
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Responsive Navigation adjustments */
     .nav-section-links {
         display: none; /* Hide section links on tablet to save space */
+    }
+    .nav {
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
     }
     .nav-main-links {
         width: 100%;
         text-align: center;
         justify-content: space-around;
         display: flex;
+        margin-bottom: 0;
     }
     .nav-main-links a {
-        margin-left: 15px;
-        margin-right: 15px;
+        margin: 0 10px;
     }
 }
 
@@ -604,8 +650,7 @@ h1, h2, h3 {
     .hero p {
         font-size: 1.1rem;
     }
-    .difference-grid, .stack-row-bottom-infra, .footer-grid {
-        /* Single column on mobile */
+    .difference-grid, .stack-row-top, .stack-row-bottom, .footer-grid {
         grid-template-columns: 1fr;
         text-align: center;
     }
