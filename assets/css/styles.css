@@ -398,8 +398,8 @@ h1, h2, h3 {
     background-color: var(--color-white);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); 
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    text-align: c
-
+    text-align: center;
+}
 .card:hover {
     transform: translateY(-8px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
