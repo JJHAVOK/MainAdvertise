@@ -709,6 +709,9 @@ h1, h2, h3 {
     .hero h1 {
         font-size: 3rem;
     }
+    .difference-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
     /* Ensure expertise section also collapses nicely on tablets/smaller screens */
     .difference-row-top,
     .difference-row-bottom {
