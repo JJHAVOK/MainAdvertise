@@ -375,9 +375,19 @@ h1, h2, h3 {
     background-color: var(--color-white);
 }
 
-.difference-grid {
+.difference-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Space between the two rows */
+    max-width: 1000px; /* Constrain the width slightly for better appearance */
+    margin: 0 auto;
+}
+
+.difference-row-top,
+.difference-row-bottom {
+    /* Set each row to be a 2-column grid */
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 30px;
     justify-content: center;
 }
@@ -388,8 +398,7 @@ h1, h2, h3 {
     background-color: var(--color-white);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); 
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    text-align: center;
-}
+    text-align: c
 
 .card:hover {
     transform: translateY(-8px);
@@ -700,8 +709,10 @@ h1, h2, h3 {
     .hero h1 {
         font-size: 3rem;
     }
-    .difference-grid {
-        grid-template-columns: repeat(2, 1fr);
+    /* Ensure expertise section also collapses nicely on tablets/smaller screens */
+    .difference-row-top,
+    .difference-row-bottom {
+        grid-template-columns: 1fr; /* Stack into a single column */
     }
     .stack-row-top {
         grid-template-columns: 1fr;
