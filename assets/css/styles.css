@@ -796,10 +796,6 @@ h1, h2, h3 {
 
 
 
-
-
-/* ... (Keep all existing CSS above this block the same) ... */
-
 /* --- NEW SECTIONS: ABOUT US PAGE STYLING --- */
 
 /* About Hero Specifics (Inherits general .hero styles but ensures main menu is NOT active) */
