@@ -40,6 +40,93 @@ h1, h2, h3 {
     color: var(--color-dark-bg);
 }
 
+.section-padding {
+    padding: 100px 0;
+}
+
+/* --- 1. Buttons --- */
+.btn {
+    display: inline-block;
+    padding: 15px 35px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: var(--font-weight-bold);
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primary {
+    background-color: var(--color-gold);
+    color: var(--color-dark-navy);
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+}
+
+.btn-primary:hover {
+    background-color: #ffda6a; 
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 193, 7, 0.6);
+}
+
+.btn-secondary {
+    background-color: var(--color-dark-navy);
+    color: var(--color-white);
+    padding: 12px 30px;
+}
+
+.btn-secondary:hover {
+    background-color: #3f51b5; /* Lighter navy */
+}
+
+.btn-nav {
+    background-color: var(--color-dark-navy);
+    padding: 10px 20px;
+}
+
+.btn-nav:hover {
+    background-color: #3f51b5;
+}
+
+
+/* --- 2. Header & Navigation --- */
+.header {
+    background-color: var(--color-white);
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.logo {
+    font-family: var(--font-primary);
+    font-size: 1.8rem;
+    font-weight: var(--font-weight-heavy);
+    color: var(--color-dark-navy);
+    text-decoration: none;
+}
+
+.nav a {
+    color: var(--color-dark-gray);
+    text-decoration: none;
+    margin-left: 30px;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.nav a:not(.btn):hover {
+    color: var(--color-gold);
+}
+
 .section-title {
     font-size: 2.5rem;
     font-weight: var(--font-weight-bold);
