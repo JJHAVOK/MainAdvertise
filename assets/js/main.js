@@ -136,10 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Execute Search Logic from Modal
     const executeModalSearch = () => {
-        checkActiveFilters();
-        // Hide the modal after executing the search
-        hideModal(searchModal);
-    };
+    checkActiveFilters(); // This triggers the filtering
+    hideModal(searchModal); // This closes the modal
+};
 
     if (modalSearchButton) {
         modalSearchButton.addEventListener('click', executeModalSearch);
@@ -154,45 +153,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 6. CONSOLIDATED FILTERING MECHANISM (Search + Checkboxes)
-    const checkActiveFilters = () => {
-        const activeTechs = Array.from(checkboxes)
-            .filter(cb => cb.checked)
-            .map(cb => cb.getAttribute('data-tech').toLowerCase());
+const checkActiveFilters = () => {
+    const activeTechs = Array.from(checkboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.getAttribute('data-tech').toLowerCase());
+        
+    // --- 1. Get search term from modal input ---
+    const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
+
+    projectCards.forEach(card => {
+        const cardTechs = card.getAttribute('data-tech').toLowerCase().split(' ');
+        const cardName = card.querySelector('h3').textContent.toLowerCase();
+        let matchesTechFilter = false;
+        let matchesSearchTerm = false;
+
+        // --- 2. Filter by Checkboxes (Tech) ---
+        if (activeTechs.length === 0) {
+            matchesTechFilter = true; // Show all if no tech filter is active
+        } else {
+            // Check if card has AT LEAST ONE of the active tech tags
+            matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
+        }
+
+        // --- 3. Filter by Search Term (Name OR Coding Language) ---
+        if (searchTerm === '') {
+            matchesSearchTerm = true; // Show all if search term is empty
+        } else {
+            // Check if search term is included in the project name OR any tech tag
+            const nameMatch = cardName.includes(searchTerm);
+            const techMatch = cardTechs.some(tech => tech.includes(searchTerm));
             
-        const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
-
-        projectCards.forEach(card => {
-            const cardTechs = card.getAttribute('data-tech').toLowerCase().split(' ');
-            const cardName = card.querySelector('h3').textContent.toLowerCase();
-            let matchesTechFilter = false;
-            let matchesSearchTerm = false;
-
-            // --- 1. Filter by Checkboxes (Tech) ---
-            if (activeTechs.length === 0) {
-                matchesTechFilter = true;
-            } else {
-                matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
-            }
-
-            // --- 2. Filter by Search Term (Name OR Coding Language) ---
-            if (searchTerm === '') {
-                matchesSearchTerm = true;
-            } else {
-                const nameMatch = cardName.includes(searchTerm);
-                const techMatch = cardTechs.some(tech => tech.includes(searchTerm));
-                
-                matchesSearchTerm = nameMatch || techMatch;
-            }
-            
-            // Show the card ONLY if it satisfies BOTH
-            card.style.display = (matchesTechFilter && matchesSearchTerm) ? 'block' : 'none';
-        });
-    };
-
-    // Attach listeners to filter checkboxes
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', checkActiveFilters);
+            matchesSearchTerm = nameMatch || techMatch;
+        }
+        
+        // Final: Show the card ONLY if it satisfies BOTH
+        card.style.display = (matchesTechFilter && matchesSearchTerm) ? 'block' : 'none';
     });
+};
+
+// Attach listeners to filter checkboxes (Must remain after the function definition)
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', checkActiveFilters);
+});
 
     // --- ACCORDION FUNCTIONALITY (Unchanged) ---
     const accordionHeaders = document.querySelectorAll('.accordion-header');
