@@ -209,23 +209,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Search Modal Execution
     const executeModalSearch = () => {
-        checkActiveFilters(); 
-        hideModal(searchModal); 
-    };
-
-    // 4. Attach Listeners
+    // 1. Triggers the filtering based on the text input
+    checkActiveFilters(); 
     
-    // Search Modal listeners
-    if (modalSearchButton) {
-        modalSearchButton.addEventListener('click', executeModalSearch);
-    }
+    // 2. NEW: Resets the text input field
     if (modalSearchInput) {
-        modalSearchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                executeModalSearch();
-            }
-        });
+        modalSearchInput.value = '';
     }
+    
+    // 3. Closes the modal
+    hideModal(searchModal); 
+};
+
+// Attach listeners for the search modal
+
+// Clicking the 'Search' button executes and closes (KEPT)
+if (modalSearchButton) {
+    modalSearchButton.addEventListener('click', executeModalSearch);
+}
+
+// Pressing 'Enter' executes and closes (KEPT & ENFORCED)
+if (modalSearchInput) {
+    modalSearchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Prevents default form submission if applicable
+            executeModalSearch();
+        }
+    });
+}
 
     // Checkbox listeners (MODIFIED to use handleCheckboxChange)
     allCheckboxes.forEach(checkbox => {
