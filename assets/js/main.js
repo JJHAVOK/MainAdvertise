@@ -133,32 +133,15 @@ const modalSearchButton = document.getElementById('modal-search-execute');
         }
     });
 
-    // --- SEARCH & FILTERING LOGIC ---
-
-    // NEW: Function to handle changes from the sidebar checkboxes
-    const handleCheckboxChange = () => {
-        // If a checkbox is clicked, clear the manual search input
-        if (modalSearchInput) {
-            modalSearchInput.value = ''; // CLEARS THE SEARCH BOX TEXT
-        }
-        
-        // Now, run the main filtering logic
-        checkActiveFilters();
-    };
-
-            // Execute Search Logic from Modal (Existing function, kept for modal close logic)
-            const executeModalSearch = () => {
-                  checkActiveFilters(); // This triggers the filtering
-                  hideModal(searchModal); // This closes the modal
-    };
-
-    // 6. CONSOLIDATED FILTERING MECHANISM (Search + Checkboxes)
+    /// --- SEARCH & FILTERING LOGIC (REPLACEMENT BLOCK STARTS HERE) ---
+    
+// 4. CONSOLIDATED FILTERING MECHANISM (The core logic MUST be defined first)
 const checkActiveFilters = () => {
     const activeTechs = Array.from(checkboxes)
         .filter(cb => cb.checked)
         .map(cb => cb.getAttribute('data-tech').toLowerCase());
         
-    // --- 1. Get search term from modal input ---
+    // Get search term from modal input
     const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
 
     projectCards.forEach(card => {
@@ -167,22 +150,19 @@ const checkActiveFilters = () => {
         let matchesTechFilter = false;
         let matchesSearchTerm = false;
 
-        // --- 2. Filter by Checkboxes (Tech) ---
+        // --- Filter by Checkboxes (Tech) ---
         if (activeTechs.length === 0) {
-            matchesTechFilter = true; // Show all if no tech filter is active
+            matchesTechFilter = true;
         } else {
-            // Check if card has AT LEAST ONE of the active tech tags
             matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
         }
 
-        // --- 3. Filter by Search Term (Name OR Coding Language) ---
+        // --- Filter by Search Term (Name OR Coding Language) ---
         if (searchTerm === '') {
-            matchesSearchTerm = true; // Show all if search term is empty
+            matchesSearchTerm = true;
         } else {
-            // Check if search term is included in the project name OR any tech tag
             const nameMatch = cardName.includes(searchTerm);
             const techMatch = cardTechs.some(tech => tech.includes(searchTerm));
-            
             matchesSearchTerm = nameMatch || techMatch;
         }
         
@@ -191,11 +171,43 @@ const checkActiveFilters = () => {
     });
 };
 
-// Attach listeners to filter checkboxes (MODIFIED BLOCK - REPLACED)
+
+// Function to execute search from the modal
+const executeModalSearch = () => {
+    // Triggers the filter based on the text input and closes the modal
+    checkActiveFilters(); 
+    hideModal(searchModal); 
+};
+
+// Function to handle changes from the sidebar checkboxes (NEW)
+const handleCheckboxChange = () => {
+    // Clears the search box text when a filter is used
+    if (modalSearchInput) {
+        modalSearchInput.value = ''; 
+    }
+    // Then runs the main filtering logic
+    checkActiveFilters();
+};
+
+// Attach listeners for the search modal (Search button and Enter key)
+if (modalSearchButton) {
+    modalSearchButton.addEventListener('click', executeModalSearch);
+}
+
+if (modalSearchInput) {
+    modalSearchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            executeModalSearch();
+        }
+    });
+}
+
+// Attach listeners to filter checkboxes (Uses the new handler)
 checkboxes.forEach(checkbox => {
-    // Now calls the new handler function
     checkbox.addEventListener('change', handleCheckboxChange); 
 });
+
+// --- SEARCH & FILTERING LOGIC (REPLACEMENT BLOCK ENDS HERE) ---
 
     // --- ACCORDION FUNCTIONALITY (Unchanged) ---
     const accordionHeaders = document.querySelectorAll('.accordion-header');
