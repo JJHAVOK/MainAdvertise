@@ -76,24 +76,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. Search Modal Control (FIXED: Ensures the button opens the search modal)
+    // --- 1. MODAL OPEN LISTENERS (THE FIX) ---
+    
+    // FIX A: Search Utility Button Click
     if (searchBtn) {
         searchBtn.addEventListener('click', () => {
             showModal(searchModal);
             if (modalSearchInput) modalSearchInput.focus();
-            // We run the filter here to clear any previous filter on modal opening
+            // Optional: Run filter to clear/show all on open
             checkActiveFilters(); 
         });
     }
 
-    // 4. Project Detail Modal Control (FIXED: Ensures project cards open the detail modal)
+    // FIX B: Project Card Click
     if (projectCards.length > 0) {
         projectCards.forEach(card => {
             card.addEventListener('click', () => {
-                
                 if (!detailModal) return; 
-
-                // --- Content Injection Logic (Unchanged) ---
+                
+                // --- Content Injection Logic (Restore necessary logic) ---
                 const projectId = card.getAttribute('data-id');
                 const projectTitle = card.querySelector('h3').textContent;
                 const projectTech = card.querySelector('.tech-stack').textContent;
@@ -110,14 +111,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         projectLink.href = `project-page-${projectId}.html`;
                     }
                 }
-                showModal(detailModal); // Opens the modal
+                
+                showModal(detailModal); // This must run last
             });
         });
     }
 
-    // 5. Global Modal Closing Functionality (Unchanged)
+    // --- 2. MODAL CLOSE LISTENERS ---
+    
     document.addEventListener('click', (event) => {
-        
         const closeBtn = event.target.closest('.close-btn');
         if (closeBtn) {
             const closeTarget = closeBtn.getAttribute('data-close-target');
@@ -129,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
+        // Close on overlay click
         if (searchModal && searchModal.classList.contains('open-modal') && event.target === searchModal) {
             hideModal(searchModal);
         }
@@ -137,20 +140,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- SEARCH & FILTERING LOGIC ---
+    // --- 3. SEARCH & FILTERING LOGIC ---
     
-    // This function only closes the modal
+    // Function to close the modal (used by Search button and Enter key)
     const executeModalSearchAndClose = () => {
         // Filtering is handled by the 'input' event, so we just close the modal here.
         hideModal(searchModal);
     };
 
-    // LIVE FILTERING: Attach listener to the input field
+    // Live filtering trigger
     if (modalSearchInput) {
-        // *** LIVE SEARCH PREVIEW IS HERE ***: Filter as the user types
         modalSearchInput.addEventListener('input', checkActiveFilters);
-        
-        // 'Enter' key CLOSES the modal
         modalSearchInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 executeModalSearchAndClose();
@@ -158,13 +158,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // 'Search' button CLOSES the modal
+    // Search button trigger
     if (modalSearchButton) {
         modalSearchButton.addEventListener('click', executeModalSearchAndClose);
     }
 
 
-    // 6. CONSOLIDATED FILTERING MECHANISM (Logic remains the same)
+    // 4. CONSOLIDATED FILTERING MECHANISM
     const checkActiveFilters = () => {
         const activeTechs = Array.from(checkboxes)
             .filter(cb => cb.checked)
@@ -178,14 +178,14 @@ document.addEventListener('DOMContentLoaded', () => {
             let matchesTechFilter = false;
             let matchesSearchTerm = false;
 
-            // --- 1. Filter by Checkboxes (Tech) ---
+            // 1. Checkbox Filter
             if (activeTechs.length === 0) {
                 matchesTechFilter = true;
             } else {
                 matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
             }
 
-            // --- 2. Filter by Search Term (Name OR Coding Language) ---
+            // 2. Search Term Filter (Name OR Tech Stack)
             if (searchTerm === '') {
                 matchesSearchTerm = true;
             } else {
@@ -195,7 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 matchesSearchTerm = nameMatch || techMatch;
             }
             
-            // Show the card ONLY if it satisfies BOTH
             card.style.display = (matchesTechFilter && matchesSearchTerm) ? 'block' : 'none';
         });
     };
