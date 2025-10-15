@@ -1476,14 +1476,16 @@ h1, h2, h3 {
 
 /* Accordion Specific Styling */
 .story-accordion {
-    padding: 10px;
-    background-color: var(--color-light-bg);
+    padding: 0; /* Remove inner padding */
+    background-color: var(--color-white); /* White background for clean look */
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--color-light-bg); /* Subtle outside border */
 }
 
 .accordion-item {
-    border-bottom: 1px solid rgba(0, 119, 182, 0.1); /* Light Primary color separator */
+    /* Use a stronger, cleaner divider */
+    border-bottom: 1px solid var(--color-light-bg); 
 }
 
 .accordion-item:last-child {
@@ -1495,41 +1497,60 @@ h1, h2, h3 {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 18px 10px;
+    padding: 18px 25px; /* Increased horizontal padding */
     background: none;
     border: none;
     text-align: left;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.2s, color 0.2s;
 }
 
-.accordion-header:hover, .accordion-header[aria-expanded="true"] {
-    background-color: rgba(0, 119, 182, 0.05); /* Very light primary background */
+.accordion-header:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.2); /* Focus ring using primary color */
+}
+
+/* Hover and Expanded State Styling */
+.accordion-header:hover, 
+.accordion-header[aria-expanded="true"] {
+    background-color: var(--color-light-bg); /* Clean light gray background on hover/active */
 }
 
 .accordion-header h3 {
-    font-size: 1.1rem;
+    font-size: 1.15rem; /* Slightly larger text */
+    font-weight: var(--font-weight-medium);
     color: var(--color-dark-bg);
     margin: 0;
 }
 
-.accordion-header i.fas {
+.accordion-header[aria-expanded="true"] h3 {
+    color: var(--color-primary); /* Primary color text when active */
+}
+
+.accordion-header i.fas:first-child { /* Icon next to text (code, rocket, shield) */
     color: var(--color-primary);
     margin-right: 15px;
+    font-size: 1.2rem;
+    transition: color 0.2s;
+}
+
+.accordion-header[aria-expanded="true"] i.fas:first-child {
+    color: var(--color-accent); /* Accent color icon when active */
 }
 
 .toggle-icon {
     font-size: 0.9rem;
-    color: var(--color-accent) !important; /* Ensure accent color for toggle icon */
+    color: var(--color-text); /* Standard text color for chevron */
     transition: transform 0.3s ease;
 }
 
 .accordion-header[aria-expanded="true"] .toggle-icon {
     transform: rotate(180deg);
+    color: var(--color-accent) !important; /* Amber accent color for the active chevron */
 }
 
 .accordion-panel {
-    padding: 0 10px 15px;
+    padding: 0 25px; /* Match header horizontal padding */
     background-color: var(--color-white);
     max-height: 0;
     overflow: hidden;
@@ -1539,15 +1560,16 @@ h1, h2, h3 {
 .accordion-panel p {
     font-size: 0.95rem;
     color: var(--color-text);
-    padding-top: 5px;
-    padding-left: 5px;
+    padding-top: 0px; /* Removed top padding */
+    padding-bottom: 15px; /* Padding for the bottom of the content */
 }
 
 /* State for open panel - controlled by JS */
 .accordion-panel.open {
-    max-height: 200px; /* Large enough number to fit content */
+    max-height: 300px; /* Increased max-height for safety */
     padding-bottom: 15px;
 }
+
 
 
 
