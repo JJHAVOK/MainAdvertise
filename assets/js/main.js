@@ -9,8 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Static Search Button & Modal Inputs
     const searchBtn = document.getElementById('static-search-btn');
-    const modalSearchInput = document.getElementById('modal-search-input');
-    const modalSearchButton = searchModal ? searchModal.querySelector('.search-input-container button') : null;
+const modalSearchInput = document.getElementById('modal-search-input');
+// CORRECTED: Target the button using its new ID
+const modalSearchButton = document.getElementById('modal-search-execute'); 
     
     // Elements to blur when a modal is active
     const elementsToBlur = [
