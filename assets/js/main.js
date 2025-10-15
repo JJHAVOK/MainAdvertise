@@ -77,13 +77,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. Search Modal Control (Open listener)
-    if (searchBtn) {
-        searchBtn.addEventListener('click', () => {
-            showModal(searchModal);
-            if (modalSearchInput) modalSearchInput.focus();
+    // 3. Search Modal Control (Open listener) - MODIFIED
+if (searchBtn) {
+    searchBtn.addEventListener('click', () => {
+        
+        // 1. UNCHECK all sidebar filtering boxes (REQUIRED FOR RESET)
+        allCheckboxes.forEach(cb => {
+            cb.checked = false;
         });
-    }
+
+        // 2. Clear the search input field (REQUIRED FOR RESET)
+        if (modalSearchInput) {
+            modalSearchInput.value = '';
+        }
+        
+        // 3. Run the filter to show all projects behind the modal
+        checkActiveFilters(); 
+
+        // 4. Finally, show the modal and focus
+        showModal(searchModal);
+        if (modalSearchInput) modalSearchInput.focus();
+    });
+}
 
     // 4. Project Detail Modal Control (FIXED: Re-attached click listener)
     if (projectCards.length > 0) {
