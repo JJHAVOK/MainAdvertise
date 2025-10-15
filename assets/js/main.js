@@ -2,10 +2,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Global Elements
     const header = document.querySelector('.header');
     const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-    const searchModal = document.getElementById('search-modal');
+    const searchModal = document.getElementById('search-modal'); 
     const detailModal = document.getElementById('project-detail-modal');
     const projectCards = document.querySelectorAll('.project-card');
     const checkboxes = document.querySelectorAll('.projects-sidebar input[type="checkbox"]');
+    
+    // Static Search Button & Modal Inputs
+    const searchBtn = document.getElementById('static-search-btn');
+    const modalSearchInput = document.getElementById('modal-search-input');
+    const modalSearchButton = searchModal ? searchModal.querySelector('.search-input-container button') : null;
     
     // Elements to blur when a modal is active
     const elementsToBlur = [
@@ -18,27 +23,16 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.querySelector('.story-projects')
     ].filter(el => el); 
 
-    // NEW: Elements inside the Search Modal
-    const modalSearchInput = document.getElementById('modal-search-input');
-    const modalSearchButton = searchModal ? searchModal.querySelector('.search-input-container button') : null;
-    
-
-    
-    // --- UTILITY FUNCTIONS (UPDATED) ---
-    
+    // --- UTILITY FUNCTIONS ---
     const toggleBlur = (enable) => {
         elementsToBlur.forEach(el => {
             el.style.filter = enable ? 'blur(5px)' : 'none';
         });
     };
 
-    // Function to show a modal
     const showModal = (modalElement) => {
         if (!modalElement) return;
-        
-        // **FIX: Use class to control visibility, opacity, and display: flex**
         modalElement.classList.add('open-modal');
-        
         toggleBlur(true);
         if (scrollToTopBtn) scrollToTopBtn.style.display = 'none';
         document.body.style.overflow = 'hidden'; 
@@ -46,10 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const hideModal = (modalElement) => {
         if (!modalElement) return;
-        
-        // **FIX: Remove class to hide modal**
         modalElement.classList.remove('open-modal');
-        
         toggleBlur(false);
         document.body.style.overflow = '';
         if (scrollToTopBtn) {
@@ -59,16 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    // --- EXISTING FUNCTIONALITY ---
+    // --- CORE FUNCTIONALITY ---
     
-    // 1. Sticky Navigation Enhancement & Scroll Button Visibility
+    // 1. Sticky Navigation & Scroll Button (Unchanged)
     window.addEventListener('scroll', () => {
         if (header) {
             header.classList.toggle('scrolled', window.scrollY > 50);
         }
         
         if (scrollToTopBtn) {
-            // Check for the new class 'open-modal'
             const modalOpen = (detailModal && detailModal.classList.contains('open-modal')) || (searchModal && searchModal.classList.contains('open-modal'));
             if (!modalOpen) {
                 scrollToTopBtn.style.display = (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) ? "block" : "none";
@@ -76,57 +66,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 2. Scroll to Top Button Functionality
+    // 2. Scroll to Top Button (Unchanged)
     if (scrollToTopBtn) {
         scrollToTopBtn.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
 
-
-    // --- PROJECTS PAGE FUNCTIONALITY ---
-
-
-
-     // 3. Search Modal Control (Existing: opens the modal)
+    // 3. Search Modal Control (FIXED: Re-attached click listener)
     if (searchBtn) {
         searchBtn.addEventListener('click', () => {
             showModal(searchModal);
-            // Optional: Auto-focus the input when the modal opens
             if (modalSearchInput) modalSearchInput.focus();
         });
     }
 
-    // NEW 3.5. Execute Search Logic from Modal
-    const executeModalSearch = () => {
-        // This will call the consolidated filter function which now reads the search input
-        checkActiveFilters();
-        // Hide the modal after executing the search
-        hideModal(searchModal);
-    };
-
-    if (modalSearchButton) {
-        modalSearchButton.addEventListener('click', executeModalSearch);
-    }
-    
-    if (modalSearchInput) {
-        // Also trigger search when user presses Enter key
-        modalSearchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                executeModalSearch();
-            }
-        });
-    }
-
-
-    // 4. Project Detail Modal Control
+    // 4. Project Detail Modal Control (FIXED: Re-attached click listener)
     if (projectCards.length > 0) {
         projectCards.forEach(card => {
             card.addEventListener('click', () => {
                 
                 if (!detailModal) return; 
 
-                // --- Content Injection ---
+                // --- Content Injection Logic (Unchanged) ---
                 const projectId = card.getAttribute('data-id');
                 const projectTitle = card.querySelector('h3').textContent;
                 const projectTech = card.querySelector('.tech-stack').textContent;
@@ -143,18 +105,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         projectLink.href = `project-page-${projectId}.html`;
                     }
                 }
-                // -------------------------
-                
-                showModal(detailModal); // Show modal and apply blur
+                showModal(detailModal); // Crucial step
             });
         });
     }
 
-
-    // 5. Global Modal Closing Functionality
+    // 5. Global Modal Closing Functionality (Unchanged)
     document.addEventListener('click', (event) => {
         
-        // Close via 'X' button click
         const closeBtn = event.target.closest('.close-btn');
         if (closeBtn) {
             const closeTarget = closeBtn.getAttribute('data-close-target');
@@ -166,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        // Close via click outside the content box (Check for the class instead of style.display)
         if (searchModal && searchModal.classList.contains('open-modal') && event.target === searchModal) {
             hideModal(searchModal);
         }
@@ -175,14 +132,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- SEARCH & FILTERING LOGIC ---
     
-    // 6. CONSOLIDATED FILTERING MECHANISM (MODIFIED to include search)
+    // Execute Search Logic from Modal
+    const executeModalSearch = () => {
+        checkActiveFilters();
+        // Hide the modal after executing the search
+        hideModal(searchModal);
+    };
+
+    if (modalSearchButton) {
+        modalSearchButton.addEventListener('click', executeModalSearch);
+    }
+    
+    if (modalSearchInput) {
+        modalSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                executeModalSearch();
+            }
+        });
+    }
+
+    // 6. CONSOLIDATED FILTERING MECHANISM (Search + Checkboxes)
     const checkActiveFilters = () => {
         const activeTechs = Array.from(checkboxes)
             .filter(cb => cb.checked)
-            .map(cb => cb.getAttribute('data-tech').toLowerCase()); // Normalize tech tags
+            .map(cb => cb.getAttribute('data-tech').toLowerCase());
             
-        // NEW: Get search term from modal input
         const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
 
         projectCards.forEach(card => {
@@ -193,41 +169,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // --- 1. Filter by Checkboxes (Tech) ---
             if (activeTechs.length === 0) {
-                matchesTechFilter = true; // Show all if no tech filter is active
+                matchesTechFilter = true;
             } else {
-                // Check if card has AT LEAST ONE of the active tech tags
                 matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
             }
 
             // --- 2. Filter by Search Term (Name OR Coding Language) ---
             if (searchTerm === '') {
-                matchesSearchTerm = true; // Show all if search term is empty
+                matchesSearchTerm = true;
             } else {
-                // Check if search term is included in the project name OR any tech tag
                 const nameMatch = cardName.includes(searchTerm);
                 const techMatch = cardTechs.some(tech => tech.includes(searchTerm));
                 
                 matchesSearchTerm = nameMatch || techMatch;
             }
             
-            // Show the card ONLY if it satisfies BOTH the checkbox filter AND the search term filter
+            // Show the card ONLY if it satisfies BOTH
             card.style.display = (matchesTechFilter && matchesSearchTerm) ? 'block' : 'none';
         });
     };
 
-
-    // Attach listeners to filter checkboxes (Existing)
+    // Attach listeners to filter checkboxes
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', checkActiveFilters);
     });
-    
 
-
-
-    // --- NEW ACCORDION FUNCTIONALITY (PROJECTS PAGE) ---
+    // --- ACCORDION FUNCTIONALITY (Unchanged) ---
     const accordionHeaders = document.querySelectorAll('.accordion-header');
     
-    // Function to calculate and set the max height for the first panel
     const initializeAccordion = () => {
         if (accordionHeaders.length > 0) {
             const firstHeader = accordionHeaders[0];
@@ -242,11 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    // Run initialization once the page is ready
     if (accordionHeaders.length > 0) {
         window.addEventListener('load', initializeAccordion);
     }
-
 
     accordionHeaders.forEach(header => {
         header.addEventListener('click', () => {
@@ -270,6 +237,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-    
 });
-
