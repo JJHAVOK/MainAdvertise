@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // 4. Project Detail Modal Control (FIXED: This now correctly opens the modal with blur)
+    // 4. Project Detail Modal Control
     projectCards.forEach(card => {
         card.addEventListener('click', () => {
             
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             // ------------------------------------------------
             
-            showModal(detailModal); // Show modal and apply blur
+            showModal(detailModal); // This call is correct. The fix is in CSS.
         });
     });
 
