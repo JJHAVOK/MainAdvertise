@@ -16,7 +16,7 @@ const modalSearchButton = document.getElementById('modal-search-execute');
     // Elements to blur when a modal is active
     const elementsToBlur = [
         document.body.querySelector('.header'), 
-        document.body.querySelector('.projects-catalogue'),
+        // document.body.querySelector('.projects-catalogue'), //Removed
         document.body.querySelector('.main-footer'),
         document.body.querySelector('.top-bar'),
         document.body.querySelector('.projects-hero'),
@@ -29,6 +29,15 @@ const modalSearchButton = document.getElementById('modal-search-execute');
         elementsToBlur.forEach(el => {
             el.style.filter = enable ? 'blur(5px)' : 'none';
         });
+    // NEW: When blurring is enabled (modal is open), set the overlay's opacity very low
+        if (searchModal) {
+            // Set overlay to be nearly transparent for search, but still apply blur to other elements
+            if (searchModal.classList.contains('open-modal')) {
+                searchModal.style.backgroundColor = enable ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0.5)';
+            } else {
+                 searchModal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            }
+        }
     };
 
     const showModal = (modalElement) => {
@@ -42,13 +51,11 @@ const modalSearchButton = document.getElementById('modal-search-execute');
     const hideModal = (modalElement) => {
         if (!modalElement) return;
         modalElement.classList.remove('open-modal');
+        // Restore overlay background color when closing the search modal
+        searchModal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
         toggleBlur(false);
         document.body.style.overflow = '';
-        if (scrollToTopBtn) {
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                 scrollToTopBtn.style.display = "block";
-            }
-        }
+        // ... (rest of hideModal logic remains the same) ...
     };
     
     // --- CORE FUNCTIONALITY ---
