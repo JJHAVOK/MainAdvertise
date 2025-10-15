@@ -1225,26 +1225,33 @@ h1, h2, h3 {
 }
 
 /* --- DYNAMIC UTILITY BUTTON (STATIC SEARCH) --- */
-.static-utility-btn {
+..static-utility-btn {
     position: fixed;
     top: 50%;
     left: 20px;
     transform: translateY(-50%);
-    z-index: 998; /* Below the header, above content */
-    background-color: var(--color-accent);
-    color: var(--color-dark-bg);
+    z-index: 998; 
+    
+    /* MODIFIED: Changed from accent color to primary blue */
+    background-color: var(--color-primary); 
+    color: var(--color-white); /* White icon/text */
+    
     border: none;
-    padding: 15px;
+    padding: 16px; /* Slightly larger padding for a better feel */
     border-radius: 50%;
-    font-size: 1.2rem;
+    font-size: 1.3rem; /* Slightly larger icon */
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s, background-color 0.2s;
+    
+    /* Enhanced, sharper shadow */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); 
+    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
 }
 
 .static-utility-btn:hover {
-    background-color: #ffb74d;
+    /* MODIFIED: Subtle color shift on hover */
+    background-color: #0088cc; /* Slightly lighter shade of primary blue */
     transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4); /* Deeper shadow on hover */
 }
 
 /* --- GLOBAL OVERLAY/MODAL STYLING (The core of the dynamic features) --- */
