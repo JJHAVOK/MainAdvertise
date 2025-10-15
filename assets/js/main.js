@@ -19,9 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ].filter(el => el); 
 
     
-    // --- UTILITY FUNCTIONS ---
+    // --- UTILITY FUNCTIONS (UPDATED) ---
     
-    // Function to apply blur effect to non-modal content
     const toggleBlur = (enable) => {
         elementsToBlur.forEach(el => {
             el.style.filter = enable ? 'blur(5px)' : 'none';
@@ -32,9 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const showModal = (modalElement) => {
         if (!modalElement) return;
         
-        // **CRITICAL FIX:** Ensure display is flex and visibility is explicitly set
-        modalElement.style.display = 'flex';
-        modalElement.style.visibility = 'visible'; // Ensure visibility isn't hidden by CSS
+        // **FIX: Use class to control visibility, opacity, and display: flex**
+        modalElement.classList.add('open-modal');
         
         toggleBlur(true);
         if (scrollToTopBtn) scrollToTopBtn.style.display = 'none';
@@ -43,8 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const hideModal = (modalElement) => {
         if (!modalElement) return;
-        modalElement.style.display = 'none';
-        modalElement.style.visibility = 'hidden'; // Set to hidden when closed
+        
+        // **FIX: Remove class to hide modal**
+        modalElement.classList.remove('open-modal');
+        
         toggleBlur(false);
         document.body.style.overflow = '';
         if (scrollToTopBtn) {
@@ -63,7 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         if (scrollToTopBtn) {
-            const modalOpen = (detailModal && detailModal.style.display === 'flex') || (searchModal && searchModal.style.display === 'flex');
+            // Check for the new class 'open-modal'
+            const modalOpen = (detailModal && detailModal.classList.contains('open-modal')) || (searchModal && searchModal.classList.contains('open-modal'));
             if (!modalOpen) {
                 scrollToTopBtn.style.display = (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) ? "block" : "none";
             }
@@ -92,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // 4. Project Detail Modal Control (The core fix is in showModal, but the listener is here)
+    // 4. Project Detail Modal Control
     if (projectCards.length > 0) {
         projectCards.forEach(card => {
             card.addEventListener('click', () => {
@@ -139,11 +140,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        // Close via click outside the content box
-        if (searchModal && searchModal.style.display === 'flex' && event.target === searchModal) {
+        // Close via click outside the content box (Check for the class instead of style.display)
+        if (searchModal && searchModal.classList.contains('open-modal') && event.target === searchModal) {
             hideModal(searchModal);
         }
-        if (detailModal && detailModal.style.display === 'flex' && event.target === detailModal) {
+        if (detailModal && detailModal.classList.contains('open-modal') && event.target === detailModal) {
             hideModal(detailModal);
         }
     });
