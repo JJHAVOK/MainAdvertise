@@ -1347,66 +1347,75 @@ h1, h2, h3 {
 }
 
 /* Specific Project Detail Modal Styling */
+Got it. The layout is correct, but the style needs to be elevated to match a high-end, professional aesthetic. I will refine the CSS one last time for the Project Detail Modal, focusing on modern spacing, typography, and a cleaner separation of content elements.
+
+Here are the revisions for your style.css file to achieve a truly professional look for the single-column modal:
+
+CSS
+
+/* ... (Keep all existing CSS above this block the same) ... */
+
+/* --- Specific Project Detail Modal Styling (Final Professional Polish) --- */
+
 .project-detail-box {
     width: 95%;
-    max-width: 800px; /* Standard professional width */
+    max-width: 850px; /* Slightly wider for better content reading */
     
-    /* REVERTED: Back to block layout */
     display: block; 
     gap: 0;
     
-    padding: 30px; /* Reduced internal padding */
+    padding: 40px; /* Increased padding for breathing room */
     max-height: 90vh;
     overflow-y: auto; 
     background-color: var(--color-white);
     border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); 
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
 }
 
 /* Modal Header Content (Visual identity/summary) */
 .modal-project-header {
-    display: flex; /* Keep image and info side-by-side at the top */
-    gap: 30px;
-    margin-bottom: 25px;
-    padding-bottom: 25px;
+    display: flex; 
+    gap: 35px; /* More space between image and text */
+    margin-bottom: 35px;
+    padding-bottom: 35px;
     
-    /* Clean divider under the header */
-    border-bottom: 2px solid var(--color-light-bg); 
+    /* Stronger, cleaner divider under the header */
+    border-bottom: 1px solid var(--color-light-bg); 
     border-right: none;
     padding-right: 0;
 }
 
 .modal-image-placeholder {
-    width: 200px; /* Fixed width for the thumbnail */
-    height: 150px;
+    width: 250px; /* Wider thumbnail for better context */
+    height: 180px;
     background-color: var(--color-light-bg);
-    border-radius: 4px;
+    border-radius: 6px; /* Slightly reduced radius */
     flex-shrink: 0;
     margin-bottom: 0;
-    border-left: 5px solid var(--color-accent); /* Accent color touch */
+    /* Clean line instead of a thick border */
+    border: 1px solid var(--color-light-bg); 
 }
 
 .modal-header-info {
-    padding-top: 0;
+    padding-top: 5px;
     flex-grow: 1;
 }
 
 .modal-header-info h2 {
-    font-size: 2rem; 
-    color: var(--color-primary); /* Primary color for the main title */
-    margin-bottom: 10px;
+    font-size: 2.2rem; /* Clear, professional title size */
+    color: var(--color-dark-bg); /* Dark title for high contrast */
+    margin-bottom: 15px;
     line-height: 1.2;
 }
 
 .modal-tech-stack, .modal-category {
-    display: inline-block; /* Tags side-by-side */
+    display: inline-block; 
     font-size: 0.85rem;
-    padding: 4px 10px;
-    border-radius: 20px; /* Pill shape for tags */
-    margin-right: 10px; 
-    margin-bottom: 0; 
+    padding: 6px 14px; /* More substantial padding for tags */
+    border-radius: 4px; /* Slightly squarer, modern tags */
+    margin-right: 12px; 
+    margin-bottom: 5px; 
     font-weight: var(--font-weight-medium);
-    width: fit-content;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -1417,28 +1426,30 @@ h1, h2, h3 {
 }
 
 .modal-category {
-    background-color: var(--color-dark-bg);
+    background-color: var(--color-primary); /* Use primary blue for category */
     color: var(--color-white);
 }
 
 
 /* Modal Body Content (The extended information) */
 .modal-project-body {
-    padding-left: 0; /* Full width content */
+    padding-left: 0; 
 }
 
 .modal-project-body h3 {
     color: var(--color-dark-bg);
-    margin-top: 30px;
-    margin-bottom: 12px;
+    margin-top: 35px; /* More vertical separation for sections */
+    margin-bottom: 15px;
     
-    /* Sleek divider for sub-headers */
-    border-left: 3px solid var(--color-primary); 
-    padding-left: 10px;
+    /* Professional underline style instead of a side border */
+    border-left: none; 
+    border-bottom: 2px solid var(--color-accent); 
+    width: fit-content; /* Only underline the title text */
+    padding-bottom: 5px;
     
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     font-weight: var(--font-weight-bold);
-    text-transform: capitalize;
+    text-transform: none; /* Keep capitalization natural */
 }
 
 .modal-project-body h3:first-child {
@@ -1446,36 +1457,28 @@ h1, h2, h3 {
 }
 
 .modal-project-body p {
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.7; /* Increased line height for readability */
     color: var(--color-text);
-}
-
-.modal-project-link {
-    /* Ensure the button is styled as primary action */
-    margin-top: 30px;
-    text-align: right; 
-    display: inline-block; /* Make it fit-content */
-    padding: 12px 25px;
 }
 
 .modal-project-body > div:last-child {
     text-align: right;
-    padding-top: 20px;
-    border-top: 1px solid var(--color-light-bg); /* Divider above the link/action */
+    padding-top: 25px;
+    border-top: 1px solid var(--color-light-bg); 
+    margin-top: 20px;
 }
 
 /* Responsive Adjustments for Modal */
-@media (max-width: 600px) {
+@media (max-width: 650px) { /* Slightly adjusted breakpoint */
     .project-detail-box {
-        max-width: 95%;
-        padding: 20px;
+        padding: 25px;
     }
     .modal-project-header {
         flex-direction: column;
         align-items: center;
-        gap: 15px;
+        gap: 20px;
     }
     .modal-image-placeholder {
         width: 100%;
@@ -1484,12 +1487,12 @@ h1, h2, h3 {
     .modal-header-info h2 {
         text-align: center;
     }
-    .modal-tech-stack, .modal-category {
-        margin-left: 0;
-        margin-right: 10px;
+    /* Tags remain centered when header stacks */
+    .modal-header-info {
+        text-align: center; 
     }
-    .modal-project-body h3 {
-        font-size: 1.2rem;
+    .modal-tech-stack, .modal-category {
+        margin-right: 8px;
     }
 }
 
