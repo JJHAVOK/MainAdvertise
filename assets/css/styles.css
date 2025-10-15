@@ -1873,21 +1873,25 @@ label {
 
 input, select, textarea {
     padding: 14px;
-    border: 1px solid #4b5563;
+    /* --- MODIFIED BORDER FOR CLARITY --- */
+    border: 2px solid #9CA3AF; /* Clearer border color and thickness */
+    /* ------------------------------------- */
     border-radius: 6px;
     background-color: #374151;
     color: var(--color-white);
     font-size: 1em;
     transition: border-color 0.3s;
-    -webkit-appearance: none; /* For cleaner select box appearance */
+    -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
 }
 
+/* Optional: Make the focus state even more dramatic */
 input:focus, select:focus, textarea:focus {
-    border-color: var(--color-secondary); /* Highlight on focus */
+    /* Keep the secondary color highlight for focus */
+    border-color: var(--color-secondary); 
     outline: none;
-    box-shadow: 0 0 0 2px rgba(252, 211, 77, 0.5);
+    box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.5); /* Slightly larger shadow */
 }
 
 textarea {
