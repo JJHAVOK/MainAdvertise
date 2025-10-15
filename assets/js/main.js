@@ -140,43 +140,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Core Filtering Mechanism (Defined first for use by other handlers)
     const checkActiveFilters = () => {
-        // Get active technology filters (all checkboxes, including 'Show All' if it exists)
-        const activeTechs = Array.from(allCheckboxes)
-            .filter(cb => cb.checked)
-            .map(cb => cb.getAttribute('data-tech').toLowerCase());
-            
-        // Get search term from modal input
-        const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
+    // Get active technology filters (all checkboxes, including 'Show All')
+    const activeTechs = Array.from(allCheckboxes) // Use allCheckboxes defined globally
+        .filter(cb => cb.checked)
+        .map(cb => cb.getAttribute('data-tech').toLowerCase());
+        
+    // Get search term from modal input
+    const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
 
-        projectCards.forEach(card => {
-            const cardTechs = card.getAttribute('data-tech').toLowerCase().split(' ');
-            const cardName = card.querySelector('h3').textContent.toLowerCase();
-            let matchesTechFilter = false;
-            let matchesSearchTerm = false;
+    projectCards.forEach(card => {
+        const cardTechs = card.getAttribute('data-tech').toLowerCase().split(' ');
+        const cardName = card.querySelector('h3').textContent.toLowerCase();
+        let matchesTechFilter = false;
+        let matchesSearchTerm = false;
 
-            // --- Filter by Checkboxes (Tech) ---
-            if (activeTechs.length === 0 || activeTechs.includes('all')) {
-                // If no boxes checked OR 'Show All' is checked, show all (except for search term)
-                matchesTechFilter = true;
-                // If 'Show All' is checked, we treat all projects as matching the tech filter
-            } else {
-                // Check if card has AT LEAST ONE of the active tech tags
-                matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
-            }
+        // --- Filter by Checkboxes (Tech) ---
+        // FIX: The project is shown if:
+        // 1. No tech boxes are checked.
+        // 2. OR the 'all' data-tech is present in the active filters.
+        // 3. OR the project matches at least one active tech tag.
+        
+        if (activeTechs.length === 0 || activeTechs.includes('all')) {
+            matchesTechFilter = true; 
+        } else {
+            // Check if card has AT LEAST ONE of the active tech tags
+            matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
+        }
 
-            // --- Filter by Search Term (Name OR Coding Language) ---
-            if (searchTerm === '') {
-                matchesSearchTerm = true;
-            } else {
-                const nameMatch = cardName.includes(searchTerm);
-                const techMatch = cardTechs.some(tech => tech.includes(searchTerm));
-                matchesSearchTerm = nameMatch || techMatch;
-            }
-            
-            // Final: Show the card ONLY if it satisfies BOTH
-            card.style.display = (matchesTechFilter && matchesSearchTerm) ? 'block' : 'none';
-        });
-    };
+        // --- Filter by Search Term (Name OR Coding Language) ---
+        if (searchTerm === '') {
+            matchesSearchTerm = true;
+        } else {
+            const nameMatch = cardName.includes(searchTerm);
+            const techMatch = cardTechs.some(tech => tech.includes(searchTerm));
+            matchesSearchTerm = nameMatch || techMatch;
+        }
+        
+        // Final: Show the card ONLY if it satisfies BOTH
+        card.style.display = (matchesTechFilter && matchesSearchTerm) ? 'block' : 'none';
+    });
+};
     
     // 2. Handler for Checkbox Changes (Includes new "Show All" logic)
     const handleCheckboxChange = (event) => {
