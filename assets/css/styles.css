@@ -559,7 +559,7 @@ h1, h2, h3 {
 .contact-form select {
     width: 100%;
     padding: 15px;
-    border-color: #9CA3AF; /* Lighten the border */
+    border-color: #eaeaeb; /* Lighten the border */
     box-shadow: 0 0 5px rgba(156, 163, 175, 0.5);
     border-radius: 5px;
     font-size: 1rem;
