@@ -1684,20 +1684,36 @@ h1, h2, h3 {
 
 
 .global-overlay {
-    /* **CRITICAL FIX: Ensure display is none by default** */
-    display: none !important; /* Added !important to ensure no external rule overrides it initially */
+    display: none; /* Hide by default, without !important */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    z-index: 2000; /* Ensure it's above everything */
-    backdrop-filter: blur(8px); /* Blur effect on the background */
-    align-items: center;
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: 2000; 
+    backdrop-filter: blur(8px); 
+    /* IMPORTANT: Use a transition on opacity for a smooth fade, and rely solely on JS for display: flex */
+    opacity: 0; 
+    transition: opacity 0.3s ease; 
+    pointer-events: none; /* Ignore clicks when hidden */
+    
+    /* Ensure center alignment, which should already be correct, but confirm */
+    align-items: center; 
     justify-content: center;
-    animation: fadeIn 0.3s ease;
 }
+
+
+
+
+/* New: State applied by JS when modal is open */
+.global-overlay.open-modal {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto; /* Allow clicks when open */
+}
+
+
 
 
 
