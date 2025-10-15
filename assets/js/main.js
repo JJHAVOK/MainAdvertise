@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectCards = document.querySelectorAll('.project-card');
     const checkboxes = document.querySelectorAll('.projects-sidebar input[type="checkbox"]');
     
-    // Elements to blur when a modal is active (expanded list for maximum coverage)
+    // Elements to blur when a modal is active
     const elementsToBlur = [
         document.body.querySelector('.header'), 
         document.body.querySelector('.projects-catalogue'),
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.querySelector('.top-bar'),
         document.body.querySelector('.projects-hero'),
         document.body.querySelector('.breadcrumb-container'),
-        document.body.querySelector('.story-projects') // Added story-projects
+        document.body.querySelector('.story-projects')
     ].filter(el => el); 
 
     
@@ -24,31 +24,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to apply blur effect to non-modal content
     const toggleBlur = (enable) => {
         elementsToBlur.forEach(el => {
-            if (enable) {
-                // Apply blur effect directly to the HTML element
-                el.style.filter = 'blur(5px)'; 
-            } else {
-                el.style.filter = 'none'; // Remove blur effect
-            }
+            el.style.filter = enable ? 'blur(5px)' : 'none';
         });
     };
 
     // Function to show a modal
     const showModal = (modalElement) => {
+        if (!modalElement) return;
+        
+        // **CRITICAL FIX:** Ensure display is flex and visibility is explicitly set
         modalElement.style.display = 'flex';
+        modalElement.style.visibility = 'visible'; // Ensure visibility isn't hidden by CSS
+        
         toggleBlur(true);
-        scrollToTopBtn.style.display = 'none'; // Hide scroll button when overlay is active
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        if (scrollToTopBtn) scrollToTopBtn.style.display = 'none';
+        document.body.style.overflow = 'hidden'; 
     };
 
-    // Function to hide a modal
     const hideModal = (modalElement) => {
+        if (!modalElement) return;
         modalElement.style.display = 'none';
+        modalElement.style.visibility = 'hidden'; // Set to hidden when closed
         toggleBlur(false);
-        document.body.style.overflow = ''; // Restore background scrolling
-        // Re-evaluate scroll button display after closing a modal
-        if (window.scrollY > 300) {
-             scrollToTopBtn.style.display = "block";
+        document.body.style.overflow = '';
+        if (scrollToTopBtn) {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                 scrollToTopBtn.style.display = "block";
+            }
         }
     };
     
@@ -56,22 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 1. Sticky Navigation Enhancement & Scroll Button Visibility
     window.addEventListener('scroll', () => {
-        if (header) { // Check if header exists (i.e., not 404 page)
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
+        if (header) {
+            header.classList.toggle('scrolled', window.scrollY > 50);
         }
         
-        // Control Scroll to Top Button visibility
         if (scrollToTopBtn) {
-            if (!detailModal || detailModal.style.display === 'none') {
-                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                    scrollToTopBtn.style.display = "block";
-                } else {
-                    scrollToTopBtn.style.display = "none";
-                }
+            const modalOpen = (detailModal && detailModal.style.display === 'flex') || (searchModal && searchModal.style.display === 'flex');
+            if (!modalOpen) {
+                scrollToTopBtn.style.display = (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) ? "block" : "none";
             }
         }
     });
@@ -86,7 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- PROJECTS PAGE FUNCTIONALITY ---
 
-    // 3. Search Modal Control (Only runs on projects page)
+
+
+     // 3. Search Modal Control
     const searchBtn = document.getElementById('static-search-btn');
     if (searchBtn) {
         searchBtn.addEventListener('click', () => {
@@ -95,34 +91,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // 4. Project Detail Modal Control
-    projectCards.forEach(card => {
-        card.addEventListener('click', () => {
-            
-            // --- Content Injection (Keep as placeholder) ---
-            const projectId = card.getAttribute('data-id');
-            const projectTitle = card.querySelector('h3').textContent;
-            const projectTech = card.querySelector('.tech-stack').textContent;
-            const projectCategory = card.getAttribute('data-category');
-            
-            const modalContent = document.getElementById('project-modal-content');
-            if (modalContent) {
-                modalContent.querySelector('h2').textContent = projectTitle;
-                modalContent.querySelector('.modal-tech-stack').textContent = projectTech;
-                modalContent.querySelector('.modal-category').textContent = projectCategory.toUpperCase().replace('-', ' ');
-                modalContent.querySelector('.modal-project-link').href = `project-page-${projectId}.html`; 
-            }
-            // ------------------------------------------------
-            
-            showModal(detailModal); // This call is correct. The fix is in CSS.
+
+    // 4. Project Detail Modal Control (The core fix is in showModal, but the listener is here)
+    if (projectCards.length > 0) {
+        projectCards.forEach(card => {
+            card.addEventListener('click', () => {
+                
+                if (!detailModal) return; 
+
+                // --- Content Injection ---
+                const projectId = card.getAttribute('data-id');
+                const projectTitle = card.querySelector('h3').textContent;
+                const projectTech = card.querySelector('.tech-stack').textContent;
+                const projectCategory = card.getAttribute('data-category');
+                
+                const modalContent = document.getElementById('project-modal-content');
+                if (modalContent) {
+                    modalContent.querySelector('h2').textContent = projectTitle;
+                    modalContent.querySelector('.modal-tech-stack').textContent = projectTech;
+                    modalContent.querySelector('.modal-category').textContent = projectCategory.toUpperCase().replace('-', ' ');
+                    
+                    const projectLink = modalContent.querySelector('.modal-project-link');
+                    if (projectLink) {
+                        projectLink.href = `project-page-${projectId}.html`;
+                    }
+                }
+                // -------------------------
+                
+                showModal(detailModal); // Show modal and apply blur
+            });
         });
-    });
+    }
 
 
-    // 5. Global Modal Closing Functionality (FIXED: Handles all modals and external clicks)
+    // 5. Global Modal Closing Functionality
     document.addEventListener('click', (event) => {
         
-        // Check for 'X' button click
+        // Close via 'X' button click
         const closeBtn = event.target.closest('.close-btn');
         if (closeBtn) {
             const closeTarget = closeBtn.getAttribute('data-close-target');
@@ -131,10 +136,10 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (closeTarget === 'project-detail-modal') {
                 hideModal(detailModal);
             }
-            return; // Exit function after closing
+            return;
         }
         
-        // Check for click outside the content box (Only if a modal is visible)
+        // Close via click outside the content box
         if (searchModal && searchModal.style.display === 'flex' && event.target === searchModal) {
             hideModal(searchModal);
         }
@@ -144,13 +149,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     
-    // 6. PROPER FILTERING MECHANISM INTEGRATION (FIXED: Now fully functional)
+    // 6. PROPER FILTERING MECHANISM INTEGRATION
     const checkActiveFilters = () => {
         const activeTechs = Array.from(checkboxes)
             .filter(cb => cb.checked)
             .map(cb => cb.getAttribute('data-tech'));
         
-        // If no filters are active, show all projects
         if (activeTechs.length === 0) {
             projectCards.forEach(card => {
                 card.style.display = 'block';
@@ -158,13 +162,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Filter the projects
         projectCards.forEach(card => {
-            // Get all tech stacks listed on the card (space separated in HTML data attribute)
             const cardTechs = card.getAttribute('data-tech').split(' ');
             let matches = false;
 
-            // Check if ANY of the card's tech stacks match ANY of the active filters
             for (let filter of activeTechs) {
                 if (cardTechs.includes(filter)) {
                     matches = true;
@@ -172,7 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Hide or show the card
             card.style.display = matches ? 'block' : 'none';
         });
     };
@@ -191,24 +191,22 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Function to calculate and set the max height for the first panel
     const initializeAccordion = () => {
-        const firstHeader = accordionHeaders[0];
-        const firstPanel = document.getElementById(firstHeader.getAttribute('data-target'));
-        
-        // Check if the first header is marked as open in HTML
-        if (firstHeader.getAttribute('aria-expanded') === 'true') {
-            // Set max-height dynamically *after* the DOM has fully loaded and rendered
-            setTimeout(() => {
-                firstPanel.style.maxHeight = firstPanel.scrollHeight + "px"; 
-            }, 50); // Small delay ensures correct scrollHeight calculation
+        if (accordionHeaders.length > 0) {
+            const firstHeader = accordionHeaders[0];
+            const firstPanel = document.getElementById(firstHeader.getAttribute('data-target'));
+            
+            if (firstHeader.getAttribute('aria-expanded') === 'true' && firstPanel) {
+                firstPanel.classList.add('open');
+                setTimeout(() => {
+                    firstPanel.style.maxHeight = firstPanel.scrollHeight + "px"; 
+                }, 50); 
+            }
         }
     };
     
     // Run initialization once the page is ready
     if (accordionHeaders.length > 0) {
-        // Use a more robust check for full page load
         window.addEventListener('load', initializeAccordion);
-        // Fallback for immediate DOMContentLoaded, just in case
-        setTimeout(initializeAccordion, 0); 
     }
 
 
@@ -218,20 +216,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const panel = document.getElementById(panelId);
             const isExpanded = header.getAttribute('aria-expanded') === 'true';
 
-            // Close all open panels first
             accordionHeaders.forEach(h => {
                 h.setAttribute('aria-expanded', 'false');
-                document.getElementById(h.getAttribute('data-target')).classList.remove('open');
-                document.getElementById(h.getAttribute('data-target')).style.maxHeight = '0';
+                const p = document.getElementById(h.getAttribute('data-target'));
+                if (p) {
+                    p.classList.remove('open');
+                    p.style.maxHeight = '0';
+                }
             });
             
-            // Toggle the current panel
-            if (!isExpanded) {
+            if (!isExpanded && panel) {
                 header.setAttribute('aria-expanded', 'true');
                 panel.classList.add('open');
                 panel.style.maxHeight = panel.scrollHeight + "px"; 
             }
         });
     });
-
+    
 });
+
