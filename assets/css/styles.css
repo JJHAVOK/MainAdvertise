@@ -1498,7 +1498,7 @@ h1, h2, h3 {
     align-items: center;
     width: 100%;
     padding: 14px 25px; /* Increased horizontal padding */
-    background: none;
+    background: #9d9e9d;
     border: none;
     text-align: left;
     cursor: pointer;
@@ -1513,7 +1513,7 @@ h1, h2, h3 {
 /* Hover and Expanded State Styling */
 .accordion-header:hover, 
 .accordion-header[aria-expanded="true"] {
-    background-color: var(--color-light-bg); /* Clean light gray background on hover/active */
+    background-color: #656665; /* Clean light gray background on hover/active */
 }
 
 .accordion-header h3 {
