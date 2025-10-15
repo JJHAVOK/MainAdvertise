@@ -446,41 +446,30 @@
 
 
     <div id="project-detail-modal" class="global-overlay">
-        <div class="project-detail-box">
+        <div class="overlay-content project-detail-box">
             <button class="close-btn" data-close-target="project-detail-modal"><i class="fas fa-times"></i></button>
-            
-            <div class="modal-content-wrapper" id="project-modal-content">
-                
+            <div id="project-modal-content">
                 <div class="modal-project-header">
-                    <div class="modal-image-placeholder">[Placeholder Image]</div>
+                    <div class="modal-image-placeholder">[Placeholder Image/Demo]</div>
                     <div class="modal-header-info">
-                        <h2>Project Title Placeholder</h2>
-                        <div class="modal-tags">
-                            <span class="modal-tech-stack">React | Node | Mongo</span>
-                            <span class="modal-category">Web Development</span>
-                        </div>
+                        <h2>[Project Title]</h2>
+                        <span class="modal-tech-stack">[Tech Stack]</span>
+                        <span class="modal-category">[Category]</span>
                     </div>
                 </div>
-
                 <div class="modal-project-body">
-                    
                     <h3>The Challenge</h3>
-                    <p>This is where the detailed narrative about the project challenge will go. It should explain the business problem or technical hurdle we needed to overcome.</p>
-                    
+                    <p>Placeholder: The client needed a highly scalable solution to manage rapidly increasing user traffic and integrate three disparate legacy systems without downtime. Our initial analysis showed latency was the primary bottleneck.</p>
                     <h3>Our Solution</h3>
-                    <p>Detailing the specific technological choices, architectural decisions, and innovative strategies used to build the final product.</p>
+                    <p>Placeholder: We architected a microservices backend using Node.js and Express.js, containerized with Docker, and deployed on AWS ECS. We migrated the database to PostgreSQL for better concurrency handling.</p>
+                    <h3>The Outcome</h3>
+                    <p>Placeholder: Deployment resulted in a 65% reduction in API response time and achieved 99.99% uptime, successfully handling peak loads 5x greater than previous capacity.</p>
                     
-                    <h3>Key Outcome</h3>
-                    <p>Highlighting the measurable results, such as performance gains, user adoption, or revenue growth, achieved through the solution.</p>
-                    
-                    <div>
-                        <a href="#" class="btn btn-primary modal-project-link">View Full Case Study <i class="fas fa-arrow-right"></i></a>
-                    </div>
+                    <a href="#" class="btn btn-primary modal-project-link">View Full Case Study <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
-            </div>
+        </div>
     </div>
-
 
 
 
