@@ -554,20 +554,18 @@ h1, h2, h3 {
     gap: 20px;
 }
 
-/* Scope the styling ONLY to elements within the contact-form */
-.contact-form input:not([type="checkbox"]), 
-.contact-form select, 
-.contact-form textarea {
-    padding: 14px;
-    border: 2px solid #9CA3AF; 
-    border-radius: 6px;
-    background-color: #374151;
-    color: var(--color-white);
-    font-size: 1em;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+    width: 100%;
+    padding: 15px;
+    border-color: #eaeaeb; /* Lighten the border */
+    box-shadow: 0 0 5px rgba(156, 163, 175, 0.5);
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: var(--font-family);
+    background-color: rgba(255, 255, 255, 0.95);
+    color: var(--color-text);
 }
 
 .contact-form button {
@@ -1996,11 +1994,16 @@ textarea {
 
 
 
+
+
+
+
+
+/* --- CONTACT PAGE FORM --- */
 .contact-form-page input:not([type="checkbox"]), 
 .contact-form-page select, 
 .contact-form-page textarea {
     padding: 14px;
-    /* FIX: Always set the default border to a highly visible light gray */
     border: 2px solid #9CA3AF; 
     border-radius: 6px;
     background-color: #374151;
@@ -2012,6 +2015,8 @@ textarea {
     appearance: none;
 }
 
+
+
 .contact-form-page input:not([type="checkbox"]):hover, 
 .contact-form-page select:hover, 
 .contact-form-page textarea:hover {
@@ -2020,22 +2025,12 @@ textarea {
     cursor: text;
 }
 
+
+
 .contact-form-page input:not([type="checkbox"]):focus, 
 .contact-form-page select:focus, 
 .contact-form-page textarea:focus {
-    /* MODIFIED: Change border color to your primary dark blue */
     border-color: var(--color-primary-dark); 
     outline: none;
-    /* KEEP: The yellow accent shadow */
     box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.5); 
 }
-
-
-
-
-
-
-
-
-
-
