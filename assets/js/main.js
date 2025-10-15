@@ -335,3 +335,20 @@ if (modalSearchInput) {
         });
     });
 });
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.getElementById('contactForm');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // ... the rest of the form submission/simulation code ...
+            
+        });
+    }
+});
