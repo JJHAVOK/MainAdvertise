@@ -5,6 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchModal = document.getElementById('search-modal'); 
     const detailModal = document.getElementById('project-detail-modal');
     const projectCards = document.querySelectorAll('.project-card');
+
+    // ... other Global Elements ...
+    const projectCards = document.querySelectorAll('.project-card');
+    // NEW: Variable for the no-results message
+    const noResultsMessage = document.getElementById('no-results-message');
+    // ... other variables ...
     
     // Checkboxes and Inputs
     const allCheckboxes = document.querySelectorAll('.projects-sidebar input[type="checkbox"]');
@@ -155,13 +161,13 @@ if (searchBtn) {
 
     // 1. Core Filtering Mechanism (Defined first for use by other handlers)
     const checkActiveFilters = () => {
-    // Get active technology filters (all checkboxes, including 'Show All')
-    const activeTechs = Array.from(allCheckboxes) // Use allCheckboxes defined globally
+    const activeTechs = Array.from(allCheckboxes)
         .filter(cb => cb.checked)
         .map(cb => cb.getAttribute('data-tech').toLowerCase());
         
-    // Get search term from modal input
     const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
+    
+    let visibleProjectCount = 0; // NEW: Initialize a counter
 
     projectCards.forEach(card => {
         const cardTechs = card.getAttribute('data-tech').toLowerCase().split(' ');
@@ -170,15 +176,9 @@ if (searchBtn) {
         let matchesSearchTerm = false;
 
         // --- Filter by Checkboxes (Tech) ---
-        // FIX: The project is shown if:
-        // 1. No tech boxes are checked.
-        // 2. OR the 'all' data-tech is present in the active filters.
-        // 3. OR the project matches at least one active tech tag.
-        
         if (activeTechs.length === 0 || activeTechs.includes('all')) {
             matchesTechFilter = true; 
         } else {
-            // Check if card has AT LEAST ONE of the active tech tags
             matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
         }
 
@@ -191,9 +191,29 @@ if (searchBtn) {
             matchesSearchTerm = nameMatch || techMatch;
         }
         
-        // Final: Show the card ONLY if it satisfies BOTH
-        card.style.display = (matchesTechFilter && matchesSearchTerm) ? 'block' : 'none';
+        // Final: Determine visibility and count
+        const isVisible = (matchesTechFilter && matchesSearchTerm);
+        card.style.display = isVisible ? 'block' : 'none';
+        
+        if (isVisible) {
+            visibleProjectCount++; // NEW: Increment counter if project is shown
+        }
     });
+    
+    // NEW: Logic to show/hide the "No Results" message
+    if (noResultsMessage) {
+        if (visibleProjectCount === 0) {
+            noResultsMessage.style.display = 'block';
+        } else {
+            noResultsMessage.style.display = 'none';
+        }
+    }
+    
+    // Optional: Update the Total Projects H2 count
+    const totalH2 = document.querySelector('.projects-catalogue-header h2');
+    if (totalH2) {
+        totalH2.textContent = `Total Projects (${visibleProjectCount})`;
+    }
 };
     
     // 2. Handler for Checkbox Changes (Includes new "Show All" logic)
