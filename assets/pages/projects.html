@@ -396,6 +396,18 @@
 
 
 
+<!--=============== PROJECTS STICKY SEARCH BUTTON ===============-->
+
+
+
+
+<button id="static-search-btn" class="static-utility-btn" title="Search Projects">
+        <i class="fas fa-search"></i>
+    </button>
+
+
+
+
 
 <!--=============== SCROLL TO TOP SECTION ===============-->
 
@@ -403,6 +415,63 @@
 
 
     <button id="scrollToTopBtn" title="Go to top">↑</button>
+
+
+
+
+
+<!--=============== Project search ===============-->
+
+
+
+
+
+
+    <div id="search-modal" class="global-overlay">
+        <div class="overlay-content search-box">
+            <button class="close-btn" data-close-target="search-modal"><i class="fas fa-times"></i></button>
+            <h3>Find Your Solution</h3>
+            <input type="text" id="global-search-input" placeholder="Search by Project Name, Industry, or Tech Stack...">
+            <button class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
+        </div>
+    </div>
+
+
+
+
+<!--=============== Project Modal dialogue ===============-->
+
+
+
+
+
+    <div id="project-detail-modal" class="global-overlay">
+        <div class="overlay-content project-detail-box">
+            <button class="close-btn" data-close-target="project-detail-modal"><i class="fas fa-times"></i></button>
+            <div id="project-modal-content">
+                <div class="modal-project-header">
+                    <div class="modal-image-placeholder">[Placeholder Image/Demo]</div>
+                    <div class="modal-header-info">
+                        <h2>[Project Title]</h2>
+                        <span class="modal-tech-stack">[Tech Stack]</span>
+                        <span class="modal-category">[Category]</span>
+                    </div>
+                </div>
+                <div class="modal-project-body">
+                    <h3>The Challenge</h3>
+                    <p>Placeholder: The client needed a highly scalable solution to manage rapidly increasing user traffic and integrate three disparate legacy systems without downtime. Our initial analysis showed latency was the primary bottleneck.</p>
+                    <h3>Our Solution</h3>
+                    <p>Placeholder: We architected a microservices backend using Node.js and Express.js, containerized with Docker, and deployed on AWS ECS. We migrated the database to PostgreSQL for better concurrency handling.</p>
+                    <h3>The Outcome</h3>
+                    <p>Placeholder: Deployment resulted in a 65% reduction in API response time and achieved 99.99% uptime, successfully handling peak loads 5x greater than previous capacity.</p>
+                    
+                    <a href="#" class="btn btn-primary modal-project-link">View Full Case Study <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 
 
