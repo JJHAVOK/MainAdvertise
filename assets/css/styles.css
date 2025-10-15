@@ -1434,3 +1434,53 @@ h1, h2, h3 {
         text-align: center;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+/* --- UTILITY ADJUSTMENT FOR SMALLER PADDING PROJECTS STORY --- */
+
+
+
+
+
+
+
+
+
+
+.section-padding-small {
+    padding: 60px 0; /* Slightly smaller padding than the main sections */
+}
+
+
+/* --- NEW PROJECTS STORY SECTION STYLING --- */
+
+.story-projects {
+    background-color: var(--color-white); /* Ensures consistent background */
+    border-bottom: 1px solid var(--color-light-bg); /* Subtle separation from breadcrumb */
+}
+
+/* All other styling for .story-grid, .story-text, .lead-paragraph, 
+   and .section-title-left is inherited directly from the About Us styles, 
+   ensuring perfect visual consistency. */
+
+
+
+
+
+
+
+
+
+
+
+
+
