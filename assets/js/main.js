@@ -182,8 +182,35 @@ document.addEventListener('DOMContentLoaded', () => {
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', checkActiveFilters);
     });
+    
+
+
+
     // --- NEW ACCORDION FUNCTIONALITY (PROJECTS PAGE) ---
     const accordionHeaders = document.querySelectorAll('.accordion-header');
+    
+    // Function to calculate and set the max height for the first panel
+    const initializeAccordion = () => {
+        const firstHeader = accordionHeaders[0];
+        const firstPanel = document.getElementById(firstHeader.getAttribute('data-target'));
+        
+        // Check if the first header is marked as open in HTML
+        if (firstHeader.getAttribute('aria-expanded') === 'true') {
+            // Set max-height dynamically *after* the DOM has fully loaded and rendered
+            setTimeout(() => {
+                firstPanel.style.maxHeight = firstPanel.scrollHeight + "px"; 
+            }, 50); // Small delay ensures correct scrollHeight calculation
+        }
+    };
+    
+    // Run initialization once the page is ready
+    if (accordionHeaders.length > 0) {
+        // Use a more robust check for full page load
+        window.addEventListener('load', initializeAccordion);
+        // Fallback for immediate DOMContentLoaded, just in case
+        setTimeout(initializeAccordion, 0); 
+    }
+
 
     accordionHeaders.forEach(header => {
         header.addEventListener('click', () => {
@@ -202,7 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isExpanded) {
                 header.setAttribute('aria-expanded', 'true');
                 panel.classList.add('open');
-                // Set max-height dynamically for smooth collapse animation
                 panel.style.maxHeight = panel.scrollHeight + "px"; 
             }
         });

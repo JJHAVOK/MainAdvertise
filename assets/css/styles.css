@@ -1573,6 +1573,59 @@ h1, h2, h3 {
 
 
 
+
+/* New: Wrapper for Left Content */
+
+
+.header-content-left {
+    display: flex;
+    align-items: center;
+}
+
+/* New: Wrapper for Right Content */
+
+
+.header-content-right {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between "Click Me" and chevron */
+}
+
+/* Arrow Guide Styling (Left of Header Name) */
+
+
+.arrow-left-guide {
+    color: var(--color-primary) !important; /* Ensure blue color */
+    margin-right: 10px;
+    font-size: 1rem !important;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.3s;
+}
+
+.accordion-header[aria-expanded="true"] .arrow-left-guide {
+    opacity: 1; /* Visible when expanded */
+}
+
+/* "Click Me" Text Styling (Right Side) */
+
+
+.click-me-text {
+    font-size: 0.8rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.accordion-header[aria-expanded="true"] .click-me-text {
+    opacity: 0; /* Hide when expanded */
+}
+
+
+
+
+
+
 /* --- RESPONSIVE ADJUSTMENTS (Ensure the swap works on mobile) --- */
 
 @media (max-width: 1024px) {
