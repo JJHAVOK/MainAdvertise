@@ -1461,16 +1461,127 @@ h1, h2, h3 {
 }
 
 
+
+
+
+
+
+
 /* --- NEW PROJECTS STORY SECTION STYLING --- */
 
+
+
+
+
+
 .story-projects {
-    background-color: var(--color-white); /* Ensures consistent background */
-    border-bottom: 1px solid var(--color-light-bg); /* Subtle separation from breadcrumb */
+    background-color: var(--color-white); 
+    border-bottom: 1px solid var(--color-light-bg);
 }
 
-/* All other styling for .story-grid, .story-text, .lead-paragraph, 
-   and .section-title-left is inherited directly from the About Us styles, 
-   ensuring perfect visual consistency. */
+/* New Grid Class to Swap Columns */
+.story-grid-projects-swapped {
+    display: grid;
+    /* Swaps column order: Accordion (3fr) on left, Text (2fr) on right */
+    grid-template-columns: 2fr 3fr; 
+    gap: 60px;
+    align-items: center;
+}
+
+/* Accordion Specific Styling */
+.story-accordion {
+    padding: 10px;
+    background-color: var(--color-light-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.accordion-item {
+    border-bottom: 1px solid rgba(0, 119, 182, 0.1); /* Light Primary color separator */
+}
+
+.accordion-item:last-child {
+    border-bottom: none;
+}
+
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 18px 10px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.accordion-header:hover, .accordion-header[aria-expanded="true"] {
+    background-color: rgba(0, 119, 182, 0.05); /* Very light primary background */
+}
+
+.accordion-header h3 {
+    font-size: 1.1rem;
+    color: var(--color-dark-bg);
+    margin: 0;
+}
+
+.accordion-header i.fas {
+    color: var(--color-primary);
+    margin-right: 15px;
+}
+
+.toggle-icon {
+    font-size: 0.9rem;
+    color: var(--color-accent) !important; /* Ensure accent color for toggle icon */
+    transition: transform 0.3s ease;
+}
+
+.accordion-header[aria-expanded="true"] .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.accordion-panel {
+    padding: 0 10px 15px;
+    background-color: var(--color-white);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+}
+
+.accordion-panel p {
+    font-size: 0.95rem;
+    color: var(--color-text);
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+/* State for open panel - controlled by JS */
+.accordion-panel.open {
+    max-height: 200px; /* Large enough number to fit content */
+    padding-bottom: 15px;
+}
+
+
+
+/* --- RESPONSIVE ADJUSTMENTS (Ensure the swap works on mobile) --- */
+
+@media (max-width: 1024px) {
+    /* Reset the grid to a single column stack on smaller screens */
+    .story-grid-projects-swapped {
+        grid-template-columns: 1fr; 
+        gap: 30px;
+    }
+    /* On small screens, keep text above accordion for best readability */
+    .story-accordion {
+        order: 1; 
+    }
+    .story-text {
+        order: 0;
+    }
+    
+}
 
 
 

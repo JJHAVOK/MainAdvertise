@@ -177,9 +177,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+
     // Attach the filter checking function to all checkbox changes
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', checkActiveFilters);
+    });
+    // --- NEW ACCORDION FUNCTIONALITY (PROJECTS PAGE) ---
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const panelId = header.getAttribute('data-target');
+            const panel = document.getElementById(panelId);
+            const isExpanded = header.getAttribute('aria-expanded') === 'true';
+
+            // Close all open panels first
+            accordionHeaders.forEach(h => {
+                h.setAttribute('aria-expanded', 'false');
+                document.getElementById(h.getAttribute('data-target')).classList.remove('open');
+                document.getElementById(h.getAttribute('data-target')).style.maxHeight = '0';
+            });
+            
+            // Toggle the current panel
+            if (!isExpanded) {
+                header.setAttribute('aria-expanded', 'true');
+                panel.classList.add('open');
+                // Set max-height dynamically for smooth collapse animation
+                panel.style.maxHeight = panel.scrollHeight + "px"; 
+            }
+        });
     });
 
 });

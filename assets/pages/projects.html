@@ -92,16 +92,55 @@
 <!--=============== MAIN SECTION ===============-->
 
 
+Absolutely! I'll go back to the Projects Story Section on the projects.html page and swap the position of the text and image container. Crucially, I'll transform the image container into a sleek vertical accordion structure with three collapsible sections, maintaining the existing colors and style.
+
+This requires modifications to the projects.html file (HTML structure) and the style.css file (Accordion styling).
+
+1. Updated HTML Structure (projects.html - Story Projects Section Only)
+I am swapping the order of the two columns inside the .story-grid and replacing the placeholder image with the new accordion structure.
+
+HTML
+
 <section class="story-projects section-padding-small">
         <div class="container">
-            <div class="story-grid">
+            <div class="story-grid-projects-swapped">
+                
+                <div class="story-accordion">
+                    <div class="accordion-item">
+                        <button class="accordion-header" aria-expanded="false" data-target="panel1">
+                            <h3><i class="fas fa-code"></i> Full-Stack Approach</h3>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </button>
+                        <div class="accordion-panel" id="panel1">
+                            <p>We tackle complexity by owning the entire vertical—from API design to cloud deployment—ensuring zero gaps between layers of technology.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" aria-expanded="false" data-target="panel2">
+                            <h3><i class="fas fa-rocket"></i> Performance Benchmarks</h3>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </button>
+                        <div class="accordion-panel" id="panel2">
+                            <p>Our solutions aren't just functional; they're engineered for speed. We guarantee metrics that define success: low latency, high concurrency, and minimal TCO (Total Cost of Ownership).</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" aria-expanded="false" data-target="panel3">
+                            <h3><i class="fas fa-shield-alt"></i> Security-First Design</h3>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </button>
+                        <div class="accordion-panel" id="panel3">
+                            <p>Compliance and defense are baked into the architecture from the start. We prioritize protocols that protect sensitive data and user privacy across all systems.</p>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="story-text">
                     <h2 class="section-title-left">Our Engineering Philosophy</h2>
                     <p class="lead-paragraph">Every project in this catalogue represents a **unique strategic challenge** that required custom architecture, not boilerplate code. We view technology as the ultimate competitive differentiator.</p>
                     <p>Our featured work showcases our ability to deliver end-to-end solutions: from crafting a pixel-perfect React front-end to optimizing complex PostgreSQL database clusters. Review our portfolio to see how technical excellence translates into tangible business results.</p>
-                </div>
-                <div class="story-image">
-                    <div class="image-placeholder"></div>
                 </div>
             </div>
         </div>
