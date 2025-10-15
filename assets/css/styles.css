@@ -1898,7 +1898,7 @@ input:focus, select:focus, textarea:focus {
     border-color: var(--color-primary-dark); 
     outline: none;
     /* KEEP: The yellow accent shadow */
-    box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.5); 
+    box-shadow: 0 0 0 3px #8fbceb; 
 }
 
 textarea {
