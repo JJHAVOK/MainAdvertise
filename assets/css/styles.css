@@ -2000,6 +2000,7 @@ textarea {
 .contact-form-page select, 
 .contact-form-page textarea {
     padding: 14px;
+    /* FIX: Always set the default border to a highly visible light gray */
     border: 2px solid #9CA3AF; 
     border-radius: 6px;
     background-color: #374151;
@@ -2022,8 +2023,10 @@ textarea {
 .contact-form-page input:not([type="checkbox"]):focus, 
 .contact-form-page select:focus, 
 .contact-form-page textarea:focus {
+    /* MODIFIED: Change border color to your primary dark blue */
     border-color: var(--color-primary-dark); 
     outline: none;
+    /* KEEP: The yellow accent shadow */
     box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.5); 
 }
 
