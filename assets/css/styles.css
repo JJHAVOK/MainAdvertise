@@ -1873,13 +1873,13 @@ label {
 
 input, select, textarea {
     padding: 14px;
-    /* NEW Default Border: Always set at 2px solid medium-gray */
-    border: 2px solid #6B7280; 
+    /* FIX: Always set the default border to a highly visible light gray */
+    border: 2px solid #9CA3AF; 
     border-radius: 6px;
     background-color: #374151;
     color: var(--color-white);
     font-size: 1em;
-    transition: border-color 0.3s, box-shadow 0.3s; /* Added box-shadow transition */
+    transition: border-color 0.3s, box-shadow 0.3s;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -1893,10 +1893,10 @@ input:hover, select:hover, textarea:hover {
 }
 
 input:focus, select:focus, textarea:focus {
-    /* Active/Focus Effect: Change border color to the primary dark blue */
+    /* MODIFIED: Change border color to your primary dark blue */
     border-color: var(--color-primary-dark); 
     outline: none;
-    /* Use the accent color for the outer shadow effect */
+    /* KEEP: The yellow accent shadow */
     box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.5); 
 }
 
