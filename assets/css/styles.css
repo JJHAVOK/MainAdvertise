@@ -2006,7 +2006,6 @@ textarea {
     padding: 14px;
     border: 2px solid #9CA3AF; 
     border-radius: 6px;
-    background-color: #374151;
     color: var(--color-white);
     font-size: 1em;
     transition: border-color 0.3s, box-shadow 0.3s;
@@ -2032,5 +2031,5 @@ textarea {
 .contact-form-page textarea:focus {
     border-color: var(--color-primary-dark); 
     outline: none;
-    box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.5); 
+    box-shadow: 0 0 0 3px #629edb; 
 }
