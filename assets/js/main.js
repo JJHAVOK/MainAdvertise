@@ -1,39 +1,41 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Global Element Declarations ---
+    // Global Elements
+    const header = document.querySelector('.header');
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
     const searchModal = document.getElementById('search-modal'); 
     const detailModal = document.getElementById('project-detail-modal');
     const projectCards = document.querySelectorAll('.project-card');
     const checkboxes = document.querySelectorAll('.projects-sidebar input[type="checkbox"]');
     
-    // Static Search Button & Modal Inputs (Crucial for functionality)
-    const searchBtn = document.getElementById('static-search-btn'); // The floating search button
-    const modalSearchInput = document.getElementById('modal-search-input');
-    const modalSearchButton = document.getElementById('modal-search-execute'); // The 'Search' button inside the modal
+    // Static Search Button & Modal Inputs
+    const searchBtn = document.getElementById('static-search-btn');
+const modalSearchInput = document.getElementById('modal-search-input');
+// CORRECTED: Target the button using its new ID
+const modalSearchButton = document.getElementById('modal-search-execute'); 
     
-    // Elements to blur (Include all major sections for a complete background blur)
+    // Elements to blur when a modal is active
     const elementsToBlur = [
-        document.querySelector('.header'), 
-        document.querySelector('.projects-catalogue'), 
-        document.querySelector('.main-footer'),
-        document.querySelector('.top-bar'),
-        document.querySelector('.projects-hero'),
-        document.querySelector('.breadcrumb-container'),
-        document.querySelector('.story-projects')
+        document.body.querySelector('.header'), 
+        document.body.querySelector('.projects-catalogue'),
+        document.body.querySelector('.main-footer'),
+        document.body.querySelector('.top-bar'),
+        document.body.querySelector('.projects-hero'),
+        document.body.querySelector('.breadcrumb-container'),
+        document.body.querySelector('.story-projects')
     ].filter(el => el); 
 
     // --- UTILITY FUNCTIONS ---
-    
     const toggleBlur = (enable) => {
         elementsToBlur.forEach(el => {
             el.style.filter = enable ? 'blur(5px)' : 'none';
         });
     };
-    
+
     const showModal = (modalElement) => {
         if (!modalElement) return;
         modalElement.classList.add('open-modal');
         toggleBlur(true);
-        // Simplification: just hide overflow, don't worry about scroll buttons here
+        if (scrollToTopBtn) scrollToTopBtn.style.display = 'none';
         document.body.style.overflow = 'hidden'; 
     };
 
@@ -42,6 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
         modalElement.classList.remove('open-modal');
         toggleBlur(false);
         document.body.style.overflow = '';
+        if (scrollToTopBtn) {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                 scrollToTopBtn.style.display = "block";
+            }
+        }
     };
     
     // --- CORE FUNCTIONALITY ---
@@ -67,25 +74,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 1. MODAL OPEN LISTENERS (THE FIX) ---
-    
-    // FIX A: Search Utility Button Click
+    // 3. Search Modal Control (FIXED: Re-attached click listener)
     if (searchBtn) {
         searchBtn.addEventListener('click', () => {
             showModal(searchModal);
             if (modalSearchInput) modalSearchInput.focus();
-            // Optional: Run filter to clear/show all on open
-            checkActiveFilters(); 
         });
     }
 
-    // FIX B: Project Card Click
+    // 4. Project Detail Modal Control (FIXED: Re-attached click listener)
     if (projectCards.length > 0) {
         projectCards.forEach(card => {
             card.addEventListener('click', () => {
-                if (!detailModal) return; 
                 
-                // --- Content Injection Logic (Restore necessary logic) ---
+                if (!detailModal) return; 
+
+                // --- Content Injection Logic (Unchanged) ---
                 const projectId = card.getAttribute('data-id');
                 const projectTitle = card.querySelector('h3').textContent;
                 const projectTech = card.querySelector('.tech-stack').textContent;
@@ -102,15 +106,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         projectLink.href = `project-page-${projectId}.html`;
                     }
                 }
-                
-                showModal(detailModal); // This must run last
+                showModal(detailModal); // Crucial step
             });
         });
     }
 
-    // --- 2. MODAL CLOSE LISTENERS ---
-    
+    // 5. Global Modal Closing Functionality (Unchanged)
     document.addEventListener('click', (event) => {
+        
         const closeBtn = event.target.closest('.close-btn');
         if (closeBtn) {
             const closeTarget = closeBtn.getAttribute('data-close-target');
@@ -122,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        // Close on overlay click
         if (searchModal && searchModal.classList.contains('open-modal') && event.target === searchModal) {
             hideModal(searchModal);
         }
@@ -131,70 +133,111 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- 3. SEARCH & FILTERING LOGIC ---
+    // --- SEARCH & FILTERING LOGIC ---
     
-    // Function to close the modal (used by Search button and Enter key)
-    const executeModalSearchAndClose = () => {
-        // Filtering is handled by the 'input' event, so we just close the modal here.
-        hideModal(searchModal);
-    };
+    // Execute Search Logic from Modal
+    const executeModalSearch = () => {
+    checkActiveFilters(); // This triggers the filtering
+    hideModal(searchModal); // This closes the modal
+};
 
-    // Live filtering trigger
+    if (modalSearchButton) {
+        modalSearchButton.addEventListener('click', executeModalSearch);
+    }
+    
     if (modalSearchInput) {
-        modalSearchInput.addEventListener('input', checkActiveFilters);
         modalSearchInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
-                executeModalSearchAndClose();
+                executeModalSearch();
             }
         });
     }
-    
-    // Search button trigger
-    if (modalSearchButton) {
-        modalSearchButton.addEventListener('click', executeModalSearchAndClose);
-    }
 
+    // 6. CONSOLIDATED FILTERING MECHANISM (Search + Checkboxes)
+const checkActiveFilters = () => {
+    const activeTechs = Array.from(checkboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.getAttribute('data-tech').toLowerCase());
+        
+    // --- 1. Get search term from modal input ---
+    const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
 
-    // 4. CONSOLIDATED FILTERING MECHANISM
-    const checkActiveFilters = () => {
-        const activeTechs = Array.from(checkboxes)
-            .filter(cb => cb.checked)
-            .map(cb => cb.getAttribute('data-tech').toLowerCase());
+    projectCards.forEach(card => {
+        const cardTechs = card.getAttribute('data-tech').toLowerCase().split(' ');
+        const cardName = card.querySelector('h3').textContent.toLowerCase();
+        let matchesTechFilter = false;
+        let matchesSearchTerm = false;
+
+        // --- 2. Filter by Checkboxes (Tech) ---
+        if (activeTechs.length === 0) {
+            matchesTechFilter = true; // Show all if no tech filter is active
+        } else {
+            // Check if card has AT LEAST ONE of the active tech tags
+            matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
+        }
+
+        // --- 3. Filter by Search Term (Name OR Coding Language) ---
+        if (searchTerm === '') {
+            matchesSearchTerm = true; // Show all if search term is empty
+        } else {
+            // Check if search term is included in the project name OR any tech tag
+            const nameMatch = cardName.includes(searchTerm);
+            const techMatch = cardTechs.some(tech => tech.includes(searchTerm));
             
-        const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
-
-        projectCards.forEach(card => {
-            const cardTechs = card.getAttribute('data-tech').toLowerCase().split(' ');
-            const cardName = card.querySelector('h3').textContent.toLowerCase();
-            let matchesTechFilter = false;
-            let matchesSearchTerm = false;
-
-            // 1. Checkbox Filter
-            if (activeTechs.length === 0) {
-                matchesTechFilter = true;
-            } else {
-                matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
-            }
-
-            // 2. Search Term Filter (Name OR Tech Stack)
-            if (searchTerm === '') {
-                matchesSearchTerm = true;
-            } else {
-                const nameMatch = cardName.includes(searchTerm);
-                const techMatch = cardTechs.some(tech => tech.includes(searchTerm));
-                
-                matchesSearchTerm = nameMatch || techMatch;
-            }
-            
-            card.style.display = (matchesTechFilter && matchesSearchTerm) ? 'block' : 'none';
-        });
-    };
-
-    // Attach listeners to filter checkboxes
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', checkActiveFilters);
+            matchesSearchTerm = nameMatch || techMatch;
+        }
+        
+        // Final: Show the card ONLY if it satisfies BOTH
+        card.style.display = (matchesTechFilter && matchesSearchTerm) ? 'block' : 'none';
     });
+};
+
+// Attach listeners to filter checkboxes (Must remain after the function definition)
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', checkActiveFilters);
+});
 
     // --- ACCORDION FUNCTIONALITY (Unchanged) ---
     const accordionHeaders = document.querySelectorAll('.accordion-header');
-    // ... (rest of accordion logic is unchanged) ...
+    
+    const initializeAccordion = () => {
+        if (accordionHeaders.length > 0) {
+            const firstHeader = accordionHeaders[0];
+            const firstPanel = document.getElementById(firstHeader.getAttribute('data-target'));
+            
+            if (firstHeader.getAttribute('aria-expanded') === 'true' && firstPanel) {
+                firstPanel.classList.add('open');
+                setTimeout(() => {
+                    firstPanel.style.maxHeight = firstPanel.scrollHeight + "px"; 
+                }, 50); 
+            }
+        }
+    };
+    
+    if (accordionHeaders.length > 0) {
+        window.addEventListener('load', initializeAccordion);
+    }
+
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const panelId = header.getAttribute('data-target');
+            const panel = document.getElementById(panelId);
+            const isExpanded = header.getAttribute('aria-expanded') === 'true';
+
+            accordionHeaders.forEach(h => {
+                h.setAttribute('aria-expanded', 'false');
+                const p = document.getElementById(h.getAttribute('data-target'));
+                if (p) {
+                    p.classList.remove('open');
+                    p.style.maxHeight = '0';
+                }
+            });
+            
+            if (!isExpanded && panel) {
+                header.setAttribute('aria-expanded', 'true');
+                panel.classList.add('open');
+                panel.style.maxHeight = panel.scrollHeight + "px"; 
+            }
+        });
+    });
+});
