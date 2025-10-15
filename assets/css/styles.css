@@ -1349,111 +1349,96 @@ h1, h2, h3 {
 /* Specific Project Detail Modal Styling */
 .project-detail-box {
     width: 95%;
-    max-width: 650px; /* RESTORED: Narrower width for a centered, compact detail view */
+    max-width: 800px; /* Standard professional width */
     
+    /* REVERTED: Back to block layout */
     display: block; 
     gap: 0;
     
-    padding: 0; /* REMOVED padding here, moved to content wrapper */
+    padding: 30px; /* Reduced internal padding */
     max-height: 90vh;
-    overflow-y: hidden; /* Control scrolling inside the wrapper */
-    background-color: var(--color-dark-bg); /* Dark background behind content */
-    border-radius: 12px;
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4); 
-}
-
-/* NEW: Inner content wrapper for clean white space and separation */
-.modal-content-wrapper {
+    overflow-y: auto; 
     background-color: var(--color-white);
-    padding: 40px;
-    height: 100%;
-    overflow-y: auto; /* Allow content to scroll */
     border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); 
 }
-
 
 /* Modal Header Content (Visual identity/summary) */
 .modal-project-header {
-    display: flex; 
-    flex-direction: column; /* Stack image/text vertically for narrow width */
-    align-items: center; /* Center items in the header */
-    gap: 25px;
-    margin-bottom: 30px;
-    padding-bottom: 30px;
+    display: flex; /* Keep image and info side-by-side at the top */
+    gap: 30px;
+    margin-bottom: 25px;
+    padding-bottom: 25px;
     
     /* Clean divider under the header */
-    border-bottom: 1px solid var(--color-light-bg); 
+    border-bottom: 2px solid var(--color-light-bg); 
+    border-right: none;
+    padding-right: 0;
 }
 
 .modal-image-placeholder {
-    width: 100%; /* Full width of the content area */
-    max-width: 350px; /* Max size for a centered image */
-    height: 200px;
+    width: 200px; /* Fixed width for the thumbnail */
+    height: 150px;
     background-color: var(--color-light-bg);
-    border-radius: 6px;
+    border-radius: 4px;
     flex-shrink: 0;
     margin-bottom: 0;
-    border: 1px solid var(--color-light-bg); 
+    border-left: 5px solid var(--color-accent); /* Accent color touch */
 }
 
 .modal-header-info {
     padding-top: 0;
     flex-grow: 1;
-    text-align: center; /* Center align header text */
 }
 
 .modal-header-info h2 {
     font-size: 2rem; 
-    color: var(--color-primary); 
-    margin-bottom: 15px;
+    color: var(--color-primary); /* Primary color for the main title */
+    margin-bottom: 10px;
     line-height: 1.2;
 }
 
-/* New: Wrapper for Tags */
-.modal-tags {
-    margin-top: 10px;
-}
-
 .modal-tech-stack, .modal-category {
-    display: inline-block; 
-    font-size: 0.8rem; /* Smaller tags look cleaner */
-    padding: 5px 12px;
-    border-radius: 20px; /* Pill shape for a modern look */
+    display: inline-block; /* Tags side-by-side */
+    font-size: 0.85rem;
+    padding: 4px 10px;
+    border-radius: 20px; /* Pill shape for tags */
     margin-right: 10px; 
-    margin-bottom: 5px; 
-    font-weight: var(--font-weight-bold); /* Bold tags */
+    margin-bottom: 0; 
+    font-weight: var(--font-weight-medium);
+    width: fit-content;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .modal-tech-stack {
-    background-color: var(--color-dark-bg); /* Dark background for tech */
-    color: var(--color-accent); /* Amber text for high contrast */
+    background-color: var(--color-accent);
+    color: var(--color-dark-bg);
 }
 
 .modal-category {
-    background-color: var(--color-light-bg); 
-    color: var(--color-text); /* Standard text color for category */
+    background-color: var(--color-dark-bg);
+    color: var(--color-white);
 }
 
 
 /* Modal Body Content (The extended information) */
 .modal-project-body {
-    padding-left: 0; 
+    padding-left: 0; /* Full width content */
 }
 
 .modal-project-body h3 {
     color: var(--color-dark-bg);
-    margin-top: 35px; 
+    margin-top: 30px;
     margin-bottom: 12px;
     
-    /* Subtle accent divider under title */
-    border-bottom: 2px solid var(--color-accent); 
-    width: fit-content; 
-    padding-bottom: 5px;
+    /* Sleek divider for sub-headers */
+    border-left: 3px solid var(--color-primary); 
+    padding-left: 10px;
     
     font-size: 1.3rem;
     font-weight: var(--font-weight-bold);
+    text-transform: capitalize;
 }
 
 .modal-project-body h3:first-child {
@@ -1467,25 +1452,44 @@ h1, h2, h3 {
     color: var(--color-text);
 }
 
-.modal-project-body > div:last-child {
-    text-align: right;
-    padding-top: 25px;
-    border-top: 1px solid var(--color-light-bg); 
-    margin-top: 20px;
+.modal-project-link {
+    /* Ensure the button is styled as primary action */
+    margin-top: 30px;
+    text-align: right; 
+    display: inline-block; /* Make it fit-content */
+    padding: 12px 25px;
 }
 
+.modal-project-body > div:last-child {
+    text-align: right;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-light-bg); /* Divider above the link/action */
+}
 
 /* Responsive Adjustments for Modal */
-@media (max-width: 650px) {
+@media (max-width: 600px) {
     .project-detail-box {
         max-width: 95%;
+        padding: 20px;
     }
-    .modal-content-wrapper {
-        padding: 25px;
+    .modal-project-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
     }
     .modal-image-placeholder {
-        max-width: 100%;
-        height: 150px;
+        width: 100%;
+        height: 180px;
+    }
+    .modal-header-info h2 {
+        text-align: center;
+    }
+    .modal-tech-stack, .modal-category {
+        margin-left: 0;
+        margin-right: 10px;
+    }
+    .modal-project-body h3 {
+        font-size: 1.2rem;
     }
 }
 
