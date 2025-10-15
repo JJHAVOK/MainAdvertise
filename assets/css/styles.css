@@ -1349,25 +1349,27 @@ h1, h2, h3 {
 /* Specific Project Detail Modal Styling */
 .project-detail-box {
     width: 95%;
-    max-width: 650px; /* RESTORED: Narrower width for a centered, compact detail view */
+    max-width: 700px; /* Slightly wider than 650px but still narrow */
     
     display: block; 
     gap: 0;
     
-    padding: 0; /* REMOVED padding here, moved to content wrapper */
+    padding: 0; /* Padding is managed by the inner wrapper */
     max-height: 90vh;
-    overflow-y: hidden; /* Control scrolling inside the wrapper */
-    background-color: var(--color-dark-bg); /* Dark background behind content */
+    overflow-y: hidden;
+    background-color: var(--color-white); /* White background for the whole box */
     border-radius: 12px;
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4); 
+    
+    /* Using a very soft, multi-layered shadow for depth */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05); 
 }
 
-/* NEW: Inner content wrapper for clean white space and separation */
+/* Inner content wrapper for clean white space and separation */
 .modal-content-wrapper {
     background-color: var(--color-white);
-    padding: 40px;
+    padding: 50px 40px; /* Increased vertical padding for airiness */
     height: 100%;
-    overflow-y: auto; /* Allow content to scroll */
+    overflow-y: auto; 
     border-radius: 12px;
 }
 
@@ -1375,65 +1377,67 @@ h1, h2, h3 {
 /* Modal Header Content (Visual identity/summary) */
 .modal-project-header {
     display: flex; 
-    flex-direction: column; /* Stack image/text vertically for narrow width */
-    align-items: center; /* Center items in the header */
-    gap: 25px;
-    margin-bottom: 30px;
-    padding-bottom: 30px;
+    flex-direction: column; 
+    align-items: center; 
+    gap: 20px;
+    margin-bottom: 40px; /* More separation */
+    padding-bottom: 30px; 
     
-    /* Clean divider under the header */
+    /* Subtle, clean bottom border */
     border-bottom: 1px solid var(--color-light-bg); 
 }
 
 .modal-image-placeholder {
-    width: 100%; /* Full width of the content area */
-    max-width: 350px; /* Max size for a centered image */
-    height: 200px;
+    width: 100%; 
+    max-width: 400px; /* Larger image area */
+    height: 220px;
     background-color: var(--color-light-bg);
-    border-radius: 6px;
+    border-radius: 8px; /* Slightly softer corners */
     flex-shrink: 0;
-    margin-bottom: 0;
-    border: 1px solid var(--color-light-bg); 
+    
+    /* Subtle inner shadow for depth */
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05); 
 }
 
 .modal-header-info {
     padding-top: 0;
     flex-grow: 1;
-    text-align: center; /* Center align header text */
+    text-align: center; 
 }
 
 .modal-header-info h2 {
-    font-size: 2rem; 
-    color: var(--color-primary); 
-    margin-bottom: 15px;
-    line-height: 1.2;
+    font-size: 2.5rem; /* Large, bold title */
+    font-weight: var(--font-weight-bold);
+    color: var(--color-dark-bg); 
+    margin-bottom: 10px;
+    line-height: 1.1;
 }
 
 /* New: Wrapper for Tags */
 .modal-tags {
-    margin-top: 10px;
+    margin-top: 15px; /* More space above tags */
 }
 
 .modal-tech-stack, .modal-category {
     display: inline-block; 
-    font-size: 0.8rem; /* Smaller tags look cleaner */
-    padding: 5px 12px;
-    border-radius: 20px; /* Pill shape for a modern look */
-    margin-right: 10px; 
+    font-size: 0.8rem; 
+    padding: 6px 16px; /* Increased horizontal padding */
+    border-radius: 25px; /* Fully rounded pill shape */
+    margin-right: 12px; 
     margin-bottom: 5px; 
-    font-weight: var(--font-weight-bold); /* Bold tags */
+    font-weight: var(--font-weight-medium);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px; /* Slight letter spacing for professionalism */
 }
 
 .modal-tech-stack {
-    background-color: var(--color-dark-bg); /* Dark background for tech */
-    color: var(--color-accent); /* Amber text for high contrast */
+    background-color: var(--color-accent);
+    color: var(--color-dark-bg);
 }
 
 .modal-category {
-    background-color: var(--color-light-bg); 
-    color: var(--color-text); /* Standard text color for category */
+    background-color: var(--color-primary); 
+    color: var(--color-white);
 }
 
 
@@ -1443,17 +1447,18 @@ h1, h2, h3 {
 }
 
 .modal-project-body h3 {
-    color: var(--color-dark-bg);
-    margin-top: 35px; 
-    margin-bottom: 12px;
+    color: var(--color-primary); /* Primary color for section titles */
+    margin-top: 40px; 
+    margin-bottom: 15px;
     
-    /* Subtle accent divider under title */
-    border-bottom: 2px solid var(--color-accent); 
-    width: fit-content; 
-    padding-bottom: 5px;
+    /* Clean, modern style for headers */
+    border-bottom: none; 
+    width: 100%; 
+    padding-bottom: 0;
     
-    font-size: 1.3rem;
+    font-size: 1.5rem; /* Larger, clearer section titles */
     font-weight: var(--font-weight-bold);
+    letter-spacing: -0.5px; /* Tighten up title spacing */
 }
 
 .modal-project-body h3:first-child {
@@ -1461,17 +1466,17 @@ h1, h2, h3 {
 }
 
 .modal-project-body p {
-    margin-bottom: 18px;
-    font-size: 1rem;
-    line-height: 1.6;
+    margin-bottom: 25px; /* More vertical separation between paragraphs */
+    font-size: 1.05rem; /* Slightly larger base font size */
+    line-height: 1.8; /* Generous line height for magazine-level readability */
     color: var(--color-text);
 }
 
 .modal-project-body > div:last-child {
     text-align: right;
-    padding-top: 25px;
-    border-top: 1px solid var(--color-light-bg); 
-    margin-top: 20px;
+    padding-top: 30px; /* More space above the action button */
+    border-top: 1px dashed var(--color-light-bg); /* Dashed line for visual interest */
+    margin-top: 30px;
 }
 
 
@@ -1481,7 +1486,7 @@ h1, h2, h3 {
         max-width: 95%;
     }
     .modal-content-wrapper {
-        padding: 25px;
+        padding: 30px 20px; /* Adjusted padding for very small screens */
     }
     .modal-image-placeholder {
         max-width: 100%;
