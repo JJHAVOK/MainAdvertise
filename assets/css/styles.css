@@ -570,24 +570,6 @@ h1, h2, h3 {
     appearance: none;
 }
 
-/* Scoped Hover Rule */
-.contact-form input:not([type="checkbox"]):hover, 
-.contact-form select:hover, 
-.contact-form textarea:hover {
-    border-color: #9CA3AF; 
-    box-shadow: 0 0 5px rgba(156, 163, 175, 0.5); 
-    cursor: text;
-}
-
-/* Scoped Focus Rule */
-.contact-form input:not([type="checkbox"]):focus, 
-.contact-form select:focus, 
-.contact-form textarea:focus {
-    border-color: var(--color-primary-dark); 
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.5); 
-}
-
 .contact-form button {
     width: 100%;
     margin-top: 10px;
@@ -2010,6 +1992,40 @@ textarea {
     }
 }
 
+
+
+
+
+.contact-form-page input:not([type="checkbox"]), 
+.contact-form-page select, 
+.contact-form-page textarea {
+    padding: 14px;
+    border: 2px solid #9CA3AF; 
+    border-radius: 6px;
+    background-color: #374151;
+    color: var(--color-white);
+    font-size: 1em;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.contact-form-page input:not([type="checkbox"]):hover, 
+.contact-form-page select:hover, 
+.contact-form-page textarea:hover {
+    border-color: #9CA3AF; 
+    box-shadow: 0 0 5px rgba(156, 163, 175, 0.5); 
+    cursor: text;
+}
+
+.contact-form-page input:not([type="checkbox"]):focus, 
+.contact-form-page select:focus, 
+.contact-form-page textarea:focus {
+    border-color: var(--color-primary-dark); 
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.5); 
+}
 
 
 
