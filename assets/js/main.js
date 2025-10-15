@@ -10,10 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ... other Global Elements ...
 
-    
-    // NEW: Variable for the no-results message
-    const noResultsMessage = document.getElementById('no-results-message'); // NEW
-    const totalH2 = document.getElementById('total-projects-h2'); // NEW or UPDATED
+
+    // UI Elements (Ensure these are here)
+    const noResultsMessage = document.getElementById('no-results-message');
+    const totalH2 = document.getElementById('total-projects-h2'); 
+
+    S
     // ... other variables ...
     
 
@@ -166,9 +168,8 @@ if (searchBtn) {
 
     // 1. Core Filtering Mechanism (Defined first for use by other handlers)
     const checkActiveFilters = () => {
-    // Re-declare elements locally to ensure they are found, if they weren't in the global scope
-    const noResultsMessage = document.getElementById('no-results-message');
-    const totalH2 = document.getElementById('total-projects-h2');
+    // No local declarations here, relying on the globally defined variables:
+    // noResultsMessage and totalH2
     
     const activeTechs = Array.from(allCheckboxes)
         .filter(cb => cb.checked)
