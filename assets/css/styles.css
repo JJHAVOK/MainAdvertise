@@ -2000,6 +2000,7 @@ textarea {
 
 
 /* --- CONTACT PAGE FORM --- */
+
 .contact-form-page input:not([type="checkbox"]), 
 .contact-form-page select, 
 .contact-form-page textarea {

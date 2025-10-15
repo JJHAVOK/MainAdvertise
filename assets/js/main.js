@@ -3,15 +3,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const header = document.querySelector('.header');
     const scrollToTopBtn = document.getElementById('scrollToTopBtn');
     
+
     // CRITICAL: These MUST be defined here for the showModal function to work
     const searchModal = document.getElementById('search-modal'); 
     const detailModal = document.getElementById('project-detail-modal');
     
     const projectCards = document.querySelectorAll('.project-card');
     
+
     // CRITICAL: These must also be defined for the counter/message
     const noResultsMessage = document.getElementById('no-results-message');
     const totalH2 = document.getElementById('total-projects-h2'); 
+
+
     // ... other variables ...
     
 
@@ -20,11 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const techCheckboxes = document.querySelectorAll('.projects-sidebar input[type="checkbox"]:not(#show-all-checkbox)'); // All tech boxes EXCEPT Show All
     const showAllCheckbox = document.getElementById('show-all-checkbox');
     
+
     // Modal Inputs
     const searchBtn = document.getElementById('static-search-btn');
     const modalSearchInput = document.getElementById('modal-search-input');
     const modalSearchButton = document.getElementById('modal-search-execute'); 
     
+
     // Elements to blur (unchanged)
     const elementsToBlur = [
         document.body.querySelector('.header'), 
@@ -35,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.querySelector('.breadcrumb-container'),
         document.body.querySelector('.story-projects')
     ].filter(el => el); 
+
 
     // --- UTILITY FUNCTIONS (Modal, Scroll, etc.) ---
     const toggleBlur = (enable) => {
@@ -62,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
+    
     
     // --- CORE FUNCTIONALITY ---
     
