@@ -1,21 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Global Element Declarations ---
+    // --- Global Elements (CRITICAL for Modals) ---
     const header = document.querySelector('.header');
     const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    
+    // CRITICAL: These MUST be defined here for the showModal function to work
     const searchModal = document.getElementById('search-modal'); 
     const detailModal = document.getElementById('project-detail-modal');
+    
     const projectCards = document.querySelectorAll('.project-card');
-
-
-
-    // ... other Global Elements ...
-
-
-    // UI Elements (Ensure these are here)
+    
+    // CRITICAL: These must also be defined for the counter/message
     const noResultsMessage = document.getElementById('no-results-message');
     const totalH2 = document.getElementById('total-projects-h2'); 
-
-    S
     // ... other variables ...
     
 
