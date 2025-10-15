@@ -134,24 +134,23 @@ const modalSearchButton = document.getElementById('modal-search-execute');
     });
 
     // --- SEARCH & FILTERING LOGIC ---
-    
-    // Execute Search Logic from Modal
-    const executeModalSearch = () => {
-    checkActiveFilters(); // This triggers the filtering
-    hideModal(searchModal); // This closes the modal
-};
 
-    if (modalSearchButton) {
-        modalSearchButton.addEventListener('click', executeModalSearch);
-    }
-    
-    if (modalSearchInput) {
-        modalSearchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                executeModalSearch();
-            }
-        });
-    }
+    // NEW: Function to handle changes from the sidebar checkboxes
+    const handleCheckboxChange = () => {
+        // If a checkbox is clicked, clear the manual search input
+        if (modalSearchInput) {
+            modalSearchInput.value = ''; // CLEARS THE SEARCH BOX TEXT
+        }
+        
+        // Now, run the main filtering logic
+        checkActiveFilters();
+    };
+
+            // Execute Search Logic from Modal (Existing function, kept for modal close logic)
+            const executeModalSearch = () => {
+                  checkActiveFilters(); // This triggers the filtering
+                  hideModal(searchModal); // This closes the modal
+    };
 
     // 6. CONSOLIDATED FILTERING MECHANISM (Search + Checkboxes)
 const checkActiveFilters = () => {
@@ -192,9 +191,10 @@ const checkActiveFilters = () => {
     });
 };
 
-// Attach listeners to filter checkboxes (Must remain after the function definition)
+// Attach listeners to filter checkboxes (MODIFIED BLOCK - REPLACED)
 checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', checkActiveFilters);
+    // Now calls the new handler function
+    checkbox.addEventListener('change', handleCheckboxChange); 
 });
 
     // --- ACCORDION FUNCTIONALITY (Unchanged) ---
