@@ -1873,25 +1873,31 @@ label {
 
 input, select, textarea {
     padding: 14px;
-    /* --- MODIFIED BORDER FOR CLARITY --- */
-    border: 2px solid #9CA3AF; /* Clearer border color and thickness */
-    /* ------------------------------------- */
+    /* NEW Default Border: Always set at 2px solid medium-gray */
+    border: 2px solid #6B7280; 
     border-radius: 6px;
     background-color: #374151;
     color: var(--color-white);
     font-size: 1em;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, box-shadow 0.3s; /* Added box-shadow transition */
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
 }
 
-/* Optional: Make the focus state even more dramatic */
+input:hover, select:hover, textarea:hover {
+    /* Hover Effect: Brighten the border and add a professional inset shadow */
+    border-color: #9CA3AF; /* Lighten the border */
+    box-shadow: 0 0 5px rgba(156, 163, 175, 0.5); 
+    cursor: text;
+}
+
 input:focus, select:focus, textarea:focus {
-    /* Keep the secondary color highlight for focus */
-    border-color: var(--color-secondary); 
+    /* Active/Focus Effect: Change border color to the primary dark blue */
+    border-color: var(--color-primary-dark); 
     outline: none;
-    box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.5); /* Slightly larger shadow */
+    /* Use the accent color for the outer shadow effect */
+    box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.5); 
 }
 
 textarea {
