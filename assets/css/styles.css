@@ -554,18 +554,38 @@ h1, h2, h3 {
     gap: 20px;
 }
 
-.contact-form input,
-.contact-form textarea,
-.contact-form select {
-    width: 100%;
-    padding: 15px;
-    border-color: #eaeaeb; /* Lighten the border */
-    box-shadow: 0 0 5px rgba(156, 163, 175, 0.5);
-    border-radius: 5px;
-    font-size: 1rem;
-    font-family: var(--font-family);
-    background-color: rgba(255, 255, 255, 0.95);
-    color: var(--color-text);
+/* Scope the styling ONLY to elements within the contact-form */
+.contact-form input:not([type="checkbox"]), 
+.contact-form select, 
+.contact-form textarea {
+    padding: 14px;
+    border: 2px solid #9CA3AF; 
+    border-radius: 6px;
+    background-color: #374151;
+    color: var(--color-white);
+    font-size: 1em;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Scoped Hover Rule */
+.contact-form input:not([type="checkbox"]):hover, 
+.contact-form select:hover, 
+.contact-form textarea:hover {
+    border-color: #9CA3AF; 
+    box-shadow: 0 0 5px rgba(156, 163, 175, 0.5); 
+    cursor: text;
+}
+
+/* Scoped Focus Rule */
+.contact-form input:not([type="checkbox"]):focus, 
+.contact-form select:focus, 
+.contact-form textarea:focus {
+    border-color: var(--color-primary-dark); 
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.5); 
 }
 
 .contact-form button {
@@ -1872,34 +1892,7 @@ label {
     color: #d1d5db;
 }
 
-input, select, textarea {
-    padding: 14px;
-    /* FIX: Always set the default border to a highly visible light gray */
-    border: 2px solid #9CA3AF; 
-    border-radius: 6px;
-    background-color: #374151;
-    color: var(--color-white);
-    font-size: 1em;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
 
-input:hover, select:hover, textarea:hover {
-    /* Hover Effect: Brighten the border and add a professional inset shadow */
-    border-color: #9CA3AF; /* Lighten the border */
-    box-shadow: 0 0 5px rgba(156, 163, 175, 0.5); 
-    cursor: text;
-}
-
-input:focus, select:focus, textarea:focus {
-    /* MODIFIED: Change border color to your primary dark blue */
-    border-color: var(--color-primary-dark); 
-    outline: none;
-    /* KEEP: The yellow accent shadow */
-    box-shadow: 0 0 0 3px #8fbceb; 
-}
 
 textarea {
     resize: vertical;
