@@ -6,12 +6,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const detailModal = document.getElementById('project-detail-modal');
     const projectCards = document.querySelectorAll('.project-card');
 
+
+
     // ... other Global Elements ...
-    const projectCards = document.querySelectorAll('.project-card');
+
+    
     // NEW: Variable for the no-results message
-    const noResultsMessage = document.getElementById('no-results-message');
+    const noResultsMessage = document.getElementById('no-results-message'); // NEW
+    const totalH2 = document.getElementById('total-projects-h2'); // NEW or UPDATED
     // ... other variables ...
     
+
     // Checkboxes and Inputs
     const allCheckboxes = document.querySelectorAll('.projects-sidebar input[type="checkbox"]');
     const techCheckboxes = document.querySelectorAll('.projects-sidebar input[type="checkbox"]:not(#show-all-checkbox)'); // All tech boxes EXCEPT Show All
@@ -161,13 +166,17 @@ if (searchBtn) {
 
     // 1. Core Filtering Mechanism (Defined first for use by other handlers)
     const checkActiveFilters = () => {
+    // Re-declare elements locally to ensure they are found, if they weren't in the global scope
+    const noResultsMessage = document.getElementById('no-results-message');
+    const totalH2 = document.getElementById('total-projects-h2');
+    
     const activeTechs = Array.from(allCheckboxes)
         .filter(cb => cb.checked)
         .map(cb => cb.getAttribute('data-tech').toLowerCase());
         
     const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
     
-    let visibleProjectCount = 0; // NEW: Initialize a counter
+    let visibleProjectCount = 0; // Initialize a counter
 
     projectCards.forEach(card => {
         const cardTechs = card.getAttribute('data-tech').toLowerCase().split(' ');
@@ -196,11 +205,13 @@ if (searchBtn) {
         card.style.display = isVisible ? 'block' : 'none';
         
         if (isVisible) {
-            visibleProjectCount++; // NEW: Increment counter if project is shown
+            visibleProjectCount++; // Increment counter if project is shown
         }
     });
     
-    // NEW: Logic to show/hide the "No Results" message
+    // --- Update UI after filtering ---
+    
+    // 1. Logic to show/hide the "No Results" message
     if (noResultsMessage) {
         if (visibleProjectCount === 0) {
             noResultsMessage.style.display = 'block';
@@ -209,8 +220,7 @@ if (searchBtn) {
         }
     }
     
-    // Optional: Update the Total Projects H2 count
-    const totalH2 = document.querySelector('.projects-catalogue-header h2');
+    // 2. Update the Total Projects H2 count
     if (totalH2) {
         totalH2.textContent = `Total Projects (${visibleProjectCount})`;
     }
