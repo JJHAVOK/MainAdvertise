@@ -18,6 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.querySelector('.story-projects')
     ].filter(el => el); 
 
+    // NEW: Elements inside the Search Modal
+    const modalSearchInput = document.getElementById('modal-search-input');
+    const modalSearchButton = searchModal ? searchModal.querySelector('.search-input-container button') : null;
+    
+
     
     // --- UTILITY FUNCTIONS (UPDATED) ---
     
@@ -83,14 +88,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-     // 3. Search Modal Control
-    const searchBtn = document.getElementById('static-search-btn');
+     // 3. Search Modal Control (Existing: opens the modal)
     if (searchBtn) {
         searchBtn.addEventListener('click', () => {
             showModal(searchModal);
+            // Optional: Auto-focus the input when the modal opens
+            if (modalSearchInput) modalSearchInput.focus();
         });
     }
 
+    // NEW 3.5. Execute Search Logic from Modal
+    const executeModalSearch = () => {
+        // This will call the consolidated filter function which now reads the search input
+        checkActiveFilters();
+        // Hide the modal after executing the search
+        hideModal(searchModal);
+    };
+
+    if (modalSearchButton) {
+        modalSearchButton.addEventListener('click', executeModalSearch);
+    }
+    
+    if (modalSearchInput) {
+        // Also trigger search when user presses Enter key
+        modalSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                executeModalSearch();
+            }
+        });
+    }
 
 
     // 4. Project Detail Modal Control
@@ -150,36 +176,47 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     
-    // 6. PROPER FILTERING MECHANISM INTEGRATION
+    // 6. CONSOLIDATED FILTERING MECHANISM (MODIFIED to include search)
     const checkActiveFilters = () => {
         const activeTechs = Array.from(checkboxes)
             .filter(cb => cb.checked)
-            .map(cb => cb.getAttribute('data-tech'));
-        
-        if (activeTechs.length === 0) {
-            projectCards.forEach(card => {
-                card.style.display = 'block';
-            });
-            return;
-        }
+            .map(cb => cb.getAttribute('data-tech').toLowerCase()); // Normalize tech tags
+            
+        // NEW: Get search term from modal input
+        const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
 
         projectCards.forEach(card => {
-            const cardTechs = card.getAttribute('data-tech').split(' ');
-            let matches = false;
+            const cardTechs = card.getAttribute('data-tech').toLowerCase().split(' ');
+            const cardName = card.querySelector('h3').textContent.toLowerCase();
+            let matchesTechFilter = false;
+            let matchesSearchTerm = false;
 
-            for (let filter of activeTechs) {
-                if (cardTechs.includes(filter)) {
-                    matches = true;
-                    break;
-                }
+            // --- 1. Filter by Checkboxes (Tech) ---
+            if (activeTechs.length === 0) {
+                matchesTechFilter = true; // Show all if no tech filter is active
+            } else {
+                // Check if card has AT LEAST ONE of the active tech tags
+                matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
             }
 
-            card.style.display = matches ? 'block' : 'none';
+            // --- 2. Filter by Search Term (Name OR Coding Language) ---
+            if (searchTerm === '') {
+                matchesSearchTerm = true; // Show all if search term is empty
+            } else {
+                // Check if search term is included in the project name OR any tech tag
+                const nameMatch = cardName.includes(searchTerm);
+                const techMatch = cardTechs.some(tech => tech.includes(searchTerm));
+                
+                matchesSearchTerm = nameMatch || techMatch;
+            }
+            
+            // Show the card ONLY if it satisfies BOTH the checkbox filter AND the search term filter
+            card.style.display = (matchesTechFilter && matchesSearchTerm) ? 'block' : 'none';
         });
     };
 
 
-    // Attach the filter checking function to all checkbox changes
+    // Attach listeners to filter checkboxes (Existing)
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', checkActiveFilters);
     });
