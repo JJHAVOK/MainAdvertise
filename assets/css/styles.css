@@ -1225,7 +1225,7 @@ h1, h2, h3 {
 }
 
 /* --- DYNAMIC UTILITY BUTTON (STATIC SEARCH) --- */
-..static-utility-btn {
+.static-utility-btn {
     position: fixed;
     top: 50%;
     left: 20px;
