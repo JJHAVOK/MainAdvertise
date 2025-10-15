@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Elements to blur (unchanged)
     const elementsToBlur = [
         document.body.querySelector('.header'), 
-        // document.body.querySelector('.projects-catalogue'), // REMOVED
+        // document.body.querySelector('.projects-catalogue'), //
         document.body.querySelector('.main-footer'),
         document.body.querySelector('.top-bar'),
         document.body.querySelector('.projects-hero'),
@@ -31,20 +31,18 @@ document.addEventListener('DOMContentLoaded', () => {
             el.style.filter = enable ? 'blur(5px)' : 'none';
         });
         
-        // NEW: When blurring is enabled (modal is open), set the overlay's opacity very low
+        // NEW: When blurring is enabled (modal is open), reduce the overlay's opacity
+        // The overlay itself needs to be transparent enough to see the content underneath.
         if (searchModal) {
-            // Set overlay to be nearly transparent for search, but still apply blur to other elements
-            if (searchModal.classList.contains('open-modal')) {
-                searchModal.style.backgroundColor = enable ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0.5)';
-            } else {
-                 searchModal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-            }
+            searchModal.style.backgroundColor = enable ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.5)';
         }
     };
     
     const showModal = (modalElement) => {
         if (!modalElement) return;
         modalElement.classList.add('open-modal');
+        // IMPORTANT: We need the overlay to be transparent enough to see through,
+        // so we manually adjust it in toggleBlur
         toggleBlur(true);
         if (scrollToTopBtn) scrollToTopBtn.style.display = 'none';
         document.body.style.overflow = 'hidden'; 
@@ -54,10 +52,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!modalElement) return;
         modalElement.classList.remove('open-modal');
         // Restore overlay background color when closing the search modal
-        searchModal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        if (modalElement === searchModal) {
+             searchModal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        }
         toggleBlur(false);
         document.body.style.overflow = '';
-        // ... (rest of hideModal logic remains the same) ...
+        if (scrollToTopBtn) {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                 scrollToTo...
+            }
+        }
     };
     
 

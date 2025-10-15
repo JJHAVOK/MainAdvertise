@@ -1750,8 +1750,15 @@ h1, h2, h3 {
 
 
 
+
+
+
+
+
+
+
 .global-overlay {
-    display: none; 
+    display: none; /* Hide by default, without !important */
     position: fixed;
     top: 0;
     left: 0;
@@ -1760,43 +1767,25 @@ h1, h2, h3 {
     background: rgba(0, 0, 0, 0.5); 
     z-index: 2000; 
     backdrop-filter: blur(8px); 
+    /* IMPORTANT: Use a transition on opacity for a smooth fade, and rely solely on JS for display: flex */
     opacity: 0; 
     transition: opacity 0.3s ease; 
-    pointer-events: none;
+    pointer-events: none; /* Ignore clicks when hidden */
     
-    /* MODIFIED: Align items to the start (top) */
-    align-items: flex-start; 
+    /* Ensure center alignment, which should already be correct, but confirm */
+    align-items: center; 
     justify-content: center;
 }
 
+
+
+
+/* New: State applied by JS when modal is open */
 .global-overlay.open-modal {
     display: flex;
     opacity: 1;
-    pointer-events: auto;
+    pointer-events: auto; /* Allow clicks when open */
 }
-
-
-
-
-
-/* --- Search Modal Specific Position --- */
-
-
-
-.search-modal-box {
-    width: 90%;
-    max-width: 600px;
-    background: var(--color-white);
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    position: relative;
-    animation: slideDown 0.3s ease-out;
-    
-    /* NEW: Add margin-top to position it lower than the absolute top */
-    margin-top: 15vh; /* Adjust as needed, 15vh is a good starting point */
-}
-
 
 
 
