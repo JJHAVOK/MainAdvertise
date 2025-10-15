@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Global Elements (Ensure these IDs exist in your HTML)
-    const header = document.querySelector('.header');
-    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    // --- Global Element Declarations ---
     const searchModal = document.getElementById('search-modal'); 
     const detailModal = document.getElementById('project-detail-modal');
     const projectCards = document.querySelectorAll('.project-card');
@@ -12,15 +10,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalSearchInput = document.getElementById('modal-search-input');
     const modalSearchButton = document.getElementById('modal-search-execute'); // The 'Search' button inside the modal
     
-    // Elements to blur when a modal is active
+    // Elements to blur (Include all major sections for a complete background blur)
     const elementsToBlur = [
-        document.body.querySelector('.header'), 
-        document.body.querySelector('.projects-catalogue'), // Currently included in blur
-        document.body.querySelector('.main-footer'),
-        document.body.querySelector('.top-bar'),
-        document.body.querySelector('.projects-hero'),
-        document.body.querySelector('.breadcrumb-container'),
-        document.body.querySelector('.story-projects')
+        document.querySelector('.header'), 
+        document.querySelector('.projects-catalogue'), 
+        document.querySelector('.main-footer'),
+        document.querySelector('.top-bar'),
+        document.querySelector('.projects-hero'),
+        document.querySelector('.breadcrumb-container'),
+        document.querySelector('.story-projects')
     ].filter(el => el); 
 
     // --- UTILITY FUNCTIONS ---
@@ -29,15 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
         elementsToBlur.forEach(el => {
             el.style.filter = enable ? 'blur(5px)' : 'none';
         });
-        
-        // Custom searchModal background logic is removed/restored to default (full blur)
     };
     
     const showModal = (modalElement) => {
         if (!modalElement) return;
         modalElement.classList.add('open-modal');
         toggleBlur(true);
-        if (scrollToTopBtn) scrollToTopBtn.style.display = 'none';
+        // Simplification: just hide overflow, don't worry about scroll buttons here
         document.body.style.overflow = 'hidden'; 
     };
 
@@ -46,11 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
         modalElement.classList.remove('open-modal');
         toggleBlur(false);
         document.body.style.overflow = '';
-        if (scrollToTopBtn) {
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                 scrollToTopBtn.style.display = "block";
-            }
-        }
     };
     
     // --- CORE FUNCTIONALITY ---
