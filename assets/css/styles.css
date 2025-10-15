@@ -1349,61 +1349,66 @@ h1, h2, h3 {
 /* Specific Project Detail Modal Styling */
 .project-detail-box {
     width: 95%;
-    max-width: 1100px; /* Increased max width for more impact */
-    display: grid;
-    /* Two columns for a modern split layout */
-    grid-template-columns: 2fr 3fr; 
-    gap: 40px;
-    padding: 40px;
+    max-width: 800px; /* Standard professional width */
+    
+    /* REVERTED: Back to block layout */
+    display: block; 
+    gap: 0;
+    
+    padding: 30px; /* Reduced internal padding */
     max-height: 90vh;
     overflow-y: auto; 
     background-color: var(--color-white);
-    border-radius: 12px; /* Slightly more rounded corners */
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4); /* Deeper shadow for "lift" */
-    
-    /* Ensure the internal content flows correctly */
-    grid-template-rows: auto; 
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); 
 }
 
-/* Modal Header Content (Left Column) */
+/* Modal Header Content (Visual identity/summary) */
 .modal-project-header {
-    /* Changed from flex to standard div block to act as the left sidebar */
-    display: block; 
-    padding: 0;
-    margin-bottom: 0;
-    border-bottom: none;
-    border-right: 1px solid var(--color-light-bg); /* Clean vertical divider */
-    padding-right: 40px;
+    display: flex; /* Keep image and info side-by-side at the top */
+    gap: 30px;
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    
+    /* Clean divider under the header */
+    border-bottom: 2px solid var(--color-light-bg); 
+    border-right: none;
+    padding-right: 0;
 }
 
 .modal-image-placeholder {
-    width: 100%;
-    height: 250px; /* Taller image space */
+    width: 200px; /* Fixed width for the thumbnail */
+    height: 150px;
     background-color: var(--color-light-bg);
-    border-radius: 6px;
-    margin-bottom: 25px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-bottom: 0;
+    border-left: 5px solid var(--color-accent); /* Accent color touch */
 }
 
 .modal-header-info {
-    padding-top: 10px;
+    padding-top: 0;
+    flex-grow: 1;
 }
 
 .modal-header-info h2 {
-    font-size: 2.5rem; /* Larger, dominant title */
-    color: var(--color-dark-bg);
-    margin-bottom: 15px;
+    font-size: 2rem; 
+    color: var(--color-primary); /* Primary color for the main title */
+    margin-bottom: 10px;
     line-height: 1.2;
 }
 
 .modal-tech-stack, .modal-category {
-    display: block; /* Stack tags vertically */
-    font-size: 0.95rem;
-    padding: 6px 10px;
-    border-radius: 4px;
-    margin-right: 0; /* Remove horizontal margin */
-    margin-bottom: 8px; /* Space between stacked tags */
+    display: inline-block; /* Tags side-by-side */
+    font-size: 0.85rem;
+    padding: 4px 10px;
+    border-radius: 20px; /* Pill shape for tags */
+    margin-right: 10px; 
+    margin-bottom: 0; 
     font-weight: var(--font-weight-medium);
-    width: fit-content; /* Only take up necessary width */
+    width: fit-content;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .modal-tech-stack {
@@ -1412,71 +1417,83 @@ h1, h2, h3 {
 }
 
 .modal-category {
-    background-color: rgba(0, 119, 182, 0.1); /* Very light primary background */
-    color: var(--color-primary);
-    border: 1px solid rgba(0, 119, 182, 0.2);
+    background-color: var(--color-dark-bg);
+    color: var(--color-white);
 }
 
 
-/* Modal Body Content (Right Column - The Story) */
+/* Modal Body Content (The extended information) */
 .modal-project-body {
-    padding-left: 0;
+    padding-left: 0; /* Full width content */
 }
 
 .modal-project-body h3 {
     color: var(--color-dark-bg);
-    margin-top: 25px;
+    margin-top: 30px;
     margin-bottom: 12px;
-    border-left: 5px solid var(--color-accent); /* Thicker accent border */
-    padding-left: 15px;
-    font-size: 1.4rem;
+    
+    /* Sleek divider for sub-headers */
+    border-left: 3px solid var(--color-primary); 
+    padding-left: 10px;
+    
+    font-size: 1.3rem;
     font-weight: var(--font-weight-bold);
+    text-transform: capitalize;
 }
 
 .modal-project-body h3:first-child {
-    margin-top: 0; /* Remove top margin for the first h3 */
+    margin-top: 0;
 }
 
 .modal-project-body p {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     font-size: 1rem;
     line-height: 1.6;
     color: var(--color-text);
 }
 
 .modal-project-link {
-    float: none; /* Removed float for better container control */
-    display: block; /* Make the button take full available width in its container */
-    margin-top: 40px;
-    text-align: right; /* Align button to the right of its parent div */
+    /* Ensure the button is styled as primary action */
+    margin-top: 30px;
+    text-align: right; 
+    display: inline-block; /* Make it fit-content */
+    padding: 12px 25px;
 }
 
 .modal-project-body > div:last-child {
-    /* Simple container to ensure button aligns right */
     text-align: right;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-light-bg); /* Divider above the link/action */
 }
 
 /* Responsive Adjustments for Modal */
-@media (max-width: 900px) {
+@media (max-width: 600px) {
     .project-detail-box {
-        grid-template-columns: 1fr; /* Stack columns vertically on smaller screens */
-        gap: 30px;
-        padding: 30px;
+        max-width: 95%;
+        padding: 20px;
     }
     .modal-project-header {
-        border-right: none;
-        border-bottom: 1px solid var(--color-light-bg); /* Horizontal divider when stacked */
-        padding-right: 0;
-        padding-bottom: 20px;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    .modal-image-placeholder {
+        width: 100%;
+        height: 180px;
     }
     .modal-header-info h2 {
         text-align: center;
     }
     .modal-tech-stack, .modal-category {
-        margin-left: auto;
-        margin-right: auto; /* Center the stacked tags */
+        margin-left: 0;
+        margin-right: 10px;
+    }
+    .modal-project-body h3 {
+        font-size: 1.2rem;
     }
 }
+
+
 
 
 
