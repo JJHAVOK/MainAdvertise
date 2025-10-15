@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Global Elements
+    // Global Elements (unchanged)
     const header = document.querySelector('.header');
     const scrollToTopBtn = document.getElementById('scrollToTopBtn');
     const searchModal = document.getElementById('search-modal'); 
@@ -7,16 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectCards = document.querySelectorAll('.project-card');
     const checkboxes = document.querySelectorAll('.projects-sidebar input[type="checkbox"]');
     
-    // Static Search Button & Modal Inputs
+    // Static Search Button & Modal Inputs (unchanged)
     const searchBtn = document.getElementById('static-search-btn');
-const modalSearchInput = document.getElementById('modal-search-input');
-// CORRECTED: Target the button using its new ID
-const modalSearchButton = document.getElementById('modal-search-execute'); 
+    const modalSearchInput = document.getElementById('modal-search-input');
+    const modalSearchButton = document.getElementById('modal-search-execute'); 
     
-    // Elements to blur when a modal is active
+    // Elements to blur (unchanged)
     const elementsToBlur = [
         document.body.querySelector('.header'), 
-        // document.body.querySelector('.projects-catalogue'), //Removed
+        document.body.querySelector('.projects-catalogue'),
         document.body.querySelector('.main-footer'),
         document.body.querySelector('.top-bar'),
         document.body.querySelector('.projects-hero'),
@@ -24,26 +23,32 @@ const modalSearchButton = document.getElementById('modal-search-execute');
         document.body.querySelector('.story-projects')
     ].filter(el => el); 
 
+
+
+
     // --- UTILITY FUNCTIONS ---
+    // (toggleBlur, showModal, hideModal remain unchanged as before, ensuring blur/open/close functionality)
+    
     const toggleBlur = (enable) => {
         elementsToBlur.forEach(el => {
             el.style.filter = enable ? 'blur(5px)' : 'none';
         });
         
-    // NEW: When blurring is enabled (modal is open), set the overlay's opacity very low
+        // NEW: When blurring is enabled (modal is open), reduce the overlay's opacity
+        // The overlay itself needs to be transparent enough to see the content underneath.
         if (searchModal) {
-            // Set overlay to be nearly transparent for search, but still apply blur to other elements
-            if (searchModal.classList.contains('open-modal')) {
-                searchModal.style.backgroundColor = enable ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0.5)';
-            } else {
-                 searchModal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-            }
+            searchModal.style.backgroundColor = enable ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.5)';
         }
     };
+
+
+
 
     const showModal = (modalElement) => {
         if (!modalElement) return;
         modalElement.classList.add('open-modal');
+        // IMPORTANT: We need the overlay to be transparent enough to see through,
+        // so we manually adjust it in toggleBlur
         toggleBlur(true);
         if (scrollToTopBtn) scrollToTopBtn.style.display = 'none';
         document.body.style.overflow = 'hidden'; 
@@ -52,14 +57,21 @@ const modalSearchButton = document.getElementById('modal-search-execute');
     const hideModal = (modalElement) => {
         if (!modalElement) return;
         modalElement.classList.remove('open-modal');
+        // Restore overlay background color when closing the search modal
+        if (modalElement === searchModal) {
+             searchModal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        }
         toggleBlur(false);
         document.body.style.overflow = '';
         if (scrollToTopBtn) {
             if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                 scrollToTopBtn.style.display = "block";
+                 scrollToTo...
             }
         }
     };
+
+
+
     
     // --- CORE FUNCTIONALITY ---
     
@@ -84,12 +96,21 @@ const modalSearchButton = document.getElementById('modal-search-execute');
         });
     }
 
-    // 3. Search Modal Control (FIXED: Re-attached click listener)
+    // 3. Search Modal Control (Still opens the modal)
     if (searchBtn) {
         searchBtn.addEventListener('click', () => {
             showModal(searchModal);
             if (modalSearchInput) modalSearchInput.focus();
+            // IMPORTANT: Also run the filter immediately to show all projects behind the modal
+            checkActiveFilters();
         });
+    }
+
+
+    
+    // MODIFIED: Search button only closes the modal now
+    if (modalSearchButton) {
+        modalSearchButton.addEventListener('click', executeModalSearchAndClose);
     }
 
     // 4. Project Detail Modal Control (FIXED: Re-attached click listener)
@@ -145,67 +166,65 @@ const modalSearchButton = document.getElementById('modal-search-execute');
 
     // --- SEARCH & FILTERING LOGIC ---
     
-    // Execute Search Logic from Modal
-    const executeModalSearch = () => {
-    checkActiveFilters(); // This triggers the filtering
-    hideModal(searchModal); // This closes the modal
-};
+    // MODIFIED: This function is now only for closing the modal after manual execution (Enter/Button)
+    const executeModalSearchAndClose = () => {
+        // Just closes the modal, as filtering is handled by the 'input' event below
+        hideModal(searchModal);
+    };
 
-    if (modalSearchButton) {
-        modalSearchButton.addEventListener('click', executeModalSearch);
-    }
-    
+    // MODIFIED: Attach listener to the input field for live filtering
     if (modalSearchInput) {
+        // Use 'input' event for real-time filtering as the user types
+        modalSearchInput.addEventListener('input', checkActiveFilters);
+        
+        // Keep 'Enter' key to close the modal after search is done
         modalSearchInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
-                executeModalSearch();
+                executeModalSearchAndClose();
             }
         });
     }
 
-    // 6. CONSOLIDATED FILTERING MECHANISM (Search + Checkboxes)
-const checkActiveFilters = () => {
-    const activeTechs = Array.from(checkboxes)
-        .filter(cb => cb.checked)
-        .map(cb => cb.getAttribute('data-tech').toLowerCase());
-        
-    // --- 1. Get search term from modal input ---
-    const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
-
-    projectCards.forEach(card => {
-        const cardTechs = card.getAttribute('data-tech').toLowerCase().split(' ');
-        const cardName = card.querySelector('h3').textContent.toLowerCase();
-        let matchesTechFilter = false;
-        let matchesSearchTerm = false;
-
-        // --- 2. Filter by Checkboxes (Tech) ---
-        if (activeTechs.length === 0) {
-            matchesTechFilter = true; // Show all if no tech filter is active
-        } else {
-            // Check if card has AT LEAST ONE of the active tech tags
-            matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
-        }
-
-        // --- 3. Filter by Search Term (Name OR Coding Language) ---
-        if (searchTerm === '') {
-            matchesSearchTerm = true; // Show all if search term is empty
-        } else {
-            // Check if search term is included in the project name OR any tech tag
-            const nameMatch = cardName.includes(searchTerm);
-            const techMatch = cardTechs.some(tech => tech.includes(searchTerm));
+    // 6. CONSOLIDATED FILTERING MECHANISM (Unchanged logic, just triggered by 'input')
+    const checkActiveFilters = () => {
+        const activeTechs = Array.from(checkboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.getAttribute('data-tech').toLowerCase());
             
-            matchesSearchTerm = nameMatch || techMatch;
-        }
-        
-        // Final: Show the card ONLY if it satisfies BOTH
-        card.style.display = (matchesTechFilter && matchesSearchTerm) ? 'block' : 'none';
-    });
-};
+        const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
 
-// Attach listeners to filter checkboxes (Must remain after the function definition)
-checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', checkActiveFilters);
-});
+        projectCards.forEach(card => {
+            const cardTechs = card.getAttribute('data-tech').toLowerCase().split(' ');
+            const cardName = card.querySelector('h3').textContent.toLowerCase();
+            let matchesTechFilter = false;
+            let matchesSearchTerm = false;
+
+            // --- 1. Filter by Checkboxes (Tech) ---
+            if (activeTechs.length === 0) {
+                matchesTechFilter = true;
+            } else {
+                matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
+            }
+
+            // --- 2. Filter by Search Term (Name OR Coding Language) ---
+            if (searchTerm === '') {
+                matchesSearchTerm = true;
+            } else {
+                const nameMatch = cardName.includes(searchTerm);
+                const techMatch = cardTechs.some(tech => tech.includes(searchTerm));
+                
+                matchesSearchTerm = nameMatch || techMatch;
+            }
+            
+            // Show the card ONLY if it satisfies BOTH
+            card.style.display = (matchesTechFilter && matchesSearchTerm) ? 'block' : 'none';
+        });
+    };
+
+    // Attach listeners to filter checkboxes (Unchanged)
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', checkActiveFilters);
+    });
 
     // --- ACCORDION FUNCTIONALITY (Unchanged) ---
     const accordionHeaders = document.querySelectorAll('.accordion-header');
