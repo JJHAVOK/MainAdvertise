@@ -1,19 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Global Elements
+    // --- Global Element Declarations ---
     const header = document.querySelector('.header');
     const scrollToTopBtn = document.getElementById('scrollToTopBtn');
     const searchModal = document.getElementById('search-modal'); 
     const detailModal = document.getElementById('project-detail-modal');
     const projectCards = document.querySelectorAll('.project-card');
-    const checkboxes = document.querySelectorAll('.projects-sidebar input[type="checkbox"]');
     
-    // Static Search Button & Modal Inputs
+    // Checkboxes and Inputs
+    const allCheckboxes = document.querySelectorAll('.projects-sidebar input[type="checkbox"]');
+    const techCheckboxes = document.querySelectorAll('.projects-sidebar input[type="checkbox"]:not(#show-all-checkbox)'); // All tech boxes EXCEPT Show All
+    const showAllCheckbox = document.getElementById('show-all-checkbox');
+    
+    // Modal Inputs
     const searchBtn = document.getElementById('static-search-btn');
-const modalSearchInput = document.getElementById('modal-search-input');
-// CORRECTED: Target the button using its new ID
-const modalSearchButton = document.getElementById('modal-search-execute'); 
+    const modalSearchInput = document.getElementById('modal-search-input');
+    const modalSearchButton = document.getElementById('modal-search-execute'); 
     
-    // Elements to blur when a modal is active
+    // Elements to blur (unchanged)
     const elementsToBlur = [
         document.body.querySelector('.header'), 
         document.body.querySelector('.projects-catalogue'),
@@ -24,7 +27,7 @@ const modalSearchButton = document.getElementById('modal-search-execute');
         document.body.querySelector('.story-projects')
     ].filter(el => el); 
 
-    // --- UTILITY FUNCTIONS ---
+    // --- UTILITY FUNCTIONS (Modal, Scroll, etc.) ---
     const toggleBlur = (enable) => {
         elementsToBlur.forEach(el => {
             el.style.filter = enable ? 'blur(5px)' : 'none';
@@ -74,7 +77,7 @@ const modalSearchButton = document.getElementById('modal-search-execute');
         });
     }
 
-    // 3. Search Modal Control (FIXED: Re-attached click listener)
+    // 3. Search Modal Control (Open listener)
     if (searchBtn) {
         searchBtn.addEventListener('click', () => {
             showModal(searchModal);
@@ -133,79 +136,98 @@ const modalSearchButton = document.getElementById('modal-search-execute');
         }
     });
 
-    /// --- SEARCH & FILTERING LOGIC (REPLACEMENT BLOCK STARTS HERE) ---
-    
-// 4. CONSOLIDATED FILTERING MECHANISM (The core logic MUST be defined first)
-const checkActiveFilters = () => {
-    const activeTechs = Array.from(checkboxes)
-        .filter(cb => cb.checked)
-        .map(cb => cb.getAttribute('data-tech').toLowerCase());
+    // --- SEARCH & FILTERING LOGIC ---
+
+    // 1. Core Filtering Mechanism (Defined first for use by other handlers)
+    const checkActiveFilters = () => {
+        // Get active technology filters (all checkboxes, including 'Show All' if it exists)
+        const activeTechs = Array.from(allCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.getAttribute('data-tech').toLowerCase());
+            
+        // Get search term from modal input
+        const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
+
+        projectCards.forEach(card => {
+            const cardTechs = card.getAttribute('data-tech').toLowerCase().split(' ');
+            const cardName = card.querySelector('h3').textContent.toLowerCase();
+            let matchesTechFilter = false;
+            let matchesSearchTerm = false;
+
+            // --- Filter by Checkboxes (Tech) ---
+            if (activeTechs.length === 0 || activeTechs.includes('all')) {
+                // If no boxes checked OR 'Show All' is checked, show all (except for search term)
+                matchesTechFilter = true;
+                // If 'Show All' is checked, we treat all projects as matching the tech filter
+            } else {
+                // Check if card has AT LEAST ONE of the active tech tags
+                matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
+            }
+
+            // --- Filter by Search Term (Name OR Coding Language) ---
+            if (searchTerm === '') {
+                matchesSearchTerm = true;
+            } else {
+                const nameMatch = cardName.includes(searchTerm);
+                const techMatch = cardTechs.some(tech => tech.includes(searchTerm));
+                matchesSearchTerm = nameMatch || techMatch;
+            }
+            
+            // Final: Show the card ONLY if it satisfies BOTH
+            card.style.display = (matchesTechFilter && matchesSearchTerm) ? 'block' : 'none';
+        });
+    };
+    
+    // 2. Handler for Checkbox Changes (Includes new "Show All" logic)
+    const handleCheckboxChange = (event) => {
+        const checkboxClicked = event.target;
         
-    // Get search term from modal input
-    const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
-
-    projectCards.forEach(card => {
-        const cardTechs = card.getAttribute('data-tech').toLowerCase().split(' ');
-        const cardName = card.querySelector('h3').textContent.toLowerCase();
-        let matchesTechFilter = false;
-        let matchesSearchTerm = false;
-
-        // --- Filter by Checkboxes (Tech) ---
-        if (activeTechs.length === 0) {
-            matchesTechFilter = true;
-        } else {
-            matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
+        // Logic for "Show All" checkbox
+        if (checkboxClicked.id === 'show-all-checkbox') {
+            if (checkboxClicked.checked) {
+                // If 'Show All' is checked, uncheck all other tech boxes
+                techCheckboxes.forEach(cb => {
+                    cb.checked = false;
+                });
+            }
+        } else if (showAllCheckbox && checkboxClicked.checked) {
+            // If any other tech box is checked, uncheck "Show All"
+            showAllCheckbox.checked = false;
         }
 
-        // --- Filter by Search Term (Name OR Coding Language) ---
-        if (searchTerm === '') {
-            matchesSearchTerm = true;
-        } else {
-            const nameMatch = cardName.includes(searchTerm);
-            const techMatch = cardTechs.some(tech => tech.includes(searchTerm));
-            matchesSearchTerm = nameMatch || techMatch;
+        // Always clear the search box when a sidebar filter is used
+        if (modalSearchInput) {
+            modalSearchInput.value = ''; 
         }
         
-        // Final: Show the card ONLY if it satisfies BOTH
-        card.style.display = (matchesTechFilter && matchesSearchTerm) ? 'block' : 'none';
-    });
-};
+        // Run the main filtering logic
+        checkActiveFilters();
+    };
 
+    // 3. Search Modal Execution
+    const executeModalSearch = () => {
+        checkActiveFilters(); 
+        hideModal(searchModal); 
+    };
 
-// Function to execute search from the modal
-const executeModalSearch = () => {
-    // Triggers the filter based on the text input and closes the modal
-    checkActiveFilters(); 
-    hideModal(searchModal); 
-};
-
-// Function to handle changes from the sidebar checkboxes (NEW)
-const handleCheckboxChange = () => {
-    // Clears the search box text when a filter is used
-    if (modalSearchInput) {
-        modalSearchInput.value = ''; 
+    // 4. Attach Listeners
+    
+    // Search Modal listeners
+    if (modalSearchButton) {
+        modalSearchButton.addEventListener('click', executeModalSearch);
     }
-    // Then runs the main filtering logic
-    checkActiveFilters();
-};
+    if (modalSearchInput) {
+        modalSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                executeModalSearch();
+            }
+        });
+    }
 
-// Attach listeners for the search modal (Search button and Enter key)
-if (modalSearchButton) {
-    modalSearchButton.addEventListener('click', executeModalSearch);
-}
-
-if (modalSearchInput) {
-    modalSearchInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            executeModalSearch();
-        }
+    // Checkbox listeners (MODIFIED to use handleCheckboxChange)
+    allCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', handleCheckboxChange); 
     });
-}
-
-// Attach listeners to filter checkboxes (Uses the new handler)
-checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', handleCheckboxChange); 
-});
 
 // --- SEARCH & FILTERING LOGIC (REPLACEMENT BLOCK ENDS HERE) ---
 
