@@ -1,63 +1,88 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Sticky Navigation Enhancement (Using the 'scrolled' class)
+    // Global Elements
     const header = document.querySelector('.header');
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    const searchModal = document.getElementById('search-modal');
+    const detailModal = document.getElementById('project-detail-modal');
+    const projectCards = document.querySelectorAll('.project-card');
+    const checkboxes = document.querySelectorAll('.projects-sidebar input[type="checkbox"]');
+    
+    // Elements to blur when a modal is active
+    const elementsToBlur = [
+        document.body.querySelector('.header'), 
+        document.body.querySelector('.projects-catalogue'),
+        document.body.querySelector('.main-footer'),
+        document.body.querySelector('.top-bar'),
+        document.body.querySelector('.projects-hero'),
+        document.body.querySelector('.breadcrumb-container')
+    ].filter(el => el); // Filter out any elements that might not exist on the current page
 
+    
+    // --- UTILITY FUNCTIONS ---
+    
+    // Function to apply blur effect to non-modal content
+    const toggleBlur = (enable) => {
+        elementsToBlur.forEach(el => {
+            if (enable) {
+                el.style.filter = 'blur(5px)'; // Apply blur effect
+            } else {
+                el.style.filter = 'none'; // Remove blur effect
+            }
+        });
+    };
+
+    // Function to show a modal
+    const showModal = (modalElement) => {
+        modalElement.style.display = 'flex';
+        toggleBlur(true);
+        scrollToTopBtn.style.display = 'none'; // Hide scroll button when overlay is active
+    };
+
+    // Function to hide a modal
+    const hideModal = (modalElement) => {
+        modalElement.style.display = 'none';
+        toggleBlur(false);
+        // Re-evaluate scroll button display after closing a modal
+        if (window.scrollY > 300) {
+             scrollToTopBtn.style.display = "block";
+        }
+    };
+    
+    // --- EXISTING FUNCTIONALITY (Simplified/Refined) ---
+    
+    // 1. Sticky Navigation Enhancement
     window.addEventListener('scroll', () => {
-        // Add a class when scrolling to subtly change the header appearance 
         if (window.scrollY > 50) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
         }
-    });
-
-
-    // 2. Scroll to Top Button Functionality
-    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-
-    // Show or hide the button based on scroll position
-    window.addEventListener('scroll', () => {
-        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-            scrollToTopBtn.style.display = "block";
-        } else {
-            scrollToTopBtn.style.display = "none";
+        
+        // Control Scroll to Top Button visibility based on scroll
+        if (!detailModal.style.display || detailModal.style.display === 'none') {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
         }
     });
 
-    // When the user clicks on the button, scroll to the top of the document
+    // 2. Scroll to Top Button Functionality
     scrollToTopBtn.addEventListener('click', () => {
-        // Use smooth scrolling behavior
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
 
-
-
-
-// --- NEW PROJECTS PAGE FUNCTIONALITY ---
-
-
-
+    // --- PROJECTS PAGE FUNCTIONALITY ---
 
     // 3. Search Modal Control
     const searchBtn = document.getElementById('static-search-btn');
-    const searchModal = document.getElementById('search-modal');
-
     searchBtn.addEventListener('click', () => {
-        searchModal.style.display = 'flex';
-        // Hide the scroll-to-top button when overlay is active
-        scrollToTopBtn.style.display = 'none'; 
+        showModal(searchModal);
     });
 
-
     // 4. Project Detail Modal Control
-    const projectCards = document.querySelectorAll('.project-card');
-    const detailModal = document.getElementById('project-detail-modal');
-
-    // Attach event listeners to all project cards
     projectCards.forEach(card => {
         card.addEventListener('click', () => {
             // Placeholder JS to simulate content loading
@@ -70,61 +95,71 @@ document.addEventListener('DOMContentLoaded', () => {
             const modalContent = document.getElementById('project-modal-content');
             modalContent.querySelector('h2').textContent = projectTitle;
             modalContent.querySelector('.modal-tech-stack').textContent = projectTech;
-            modalContent.querySelector('.modal-category').textContent = projectCategory.toUpperCase();
+            modalContent.querySelector('.modal-category').textContent = projectCategory.toUpperCase().replace('-', ' ');
             modalContent.querySelector('.modal-project-link').href = `project-page-${projectId}.html`; // Link to the future dedicated page
 
-            detailModal.style.display = 'flex';
-            scrollToTopBtn.style.display = 'none';
+            showModal(detailModal); // Show modal and apply blur
         });
     });
 
 
     // 5. Global Modal Closing Functionality (Click X or click outside)
     document.addEventListener('click', (event) => {
-        const modals = document.querySelectorAll('.global-overlay');
-
+        
         // Close via 'X' button click
         if (event.target.closest('.close-btn')) {
-            const targetId = event.target.closest('.close-btn').getAttribute('data-close-target');
-            document.getElementById(targetId).style.display = 'none';
+            const closeTarget = event.target.closest('.close-btn').getAttribute('data-close-target');
+            if (closeTarget === 'search-modal') {
+                hideModal(searchModal);
+            } else if (closeTarget === 'project-detail-modal') {
+                hideModal(detailModal);
+            }
         }
         
         // Close via click outside the content box
-        modals.forEach(modal => {
-            // Check if the click occurred on the overlay itself, and not on a child element with the class 'overlay-content'
-            if (modal.style.display === 'flex' && event.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-        
-        // Re-evaluate scroll button display after closing a modal
-        if (window.scrollY > 300) {
-             scrollToTopBtn.style.display = "block";
+        if (searchModal.style.display === 'flex' && event.target === searchModal) {
+            hideModal(searchModal);
+        }
+        if (detailModal.style.display === 'flex' && event.target === detailModal) {
+            hideModal(detailModal);
         }
     });
 
-    // 6. Basic Filtering Logic (Placeholder for future expansion)
-    const checkboxes = document.querySelectorAll('.projects-sidebar input[type="checkbox"]');
     
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', () => {
-            // In a real application, you would gather all checked values
-            // and refilter/re-render the project-grid here.
-            
-            // Placeholder functionality: Just log the filter changes
-            const activeFilters = Array.from(checkboxes)
-                .filter(cb => cb.checked)
-                .map(cb => cb.getAttribute('data-tech'));
-            
-            console.log('Active Filters:', activeFilters);
-            
-            // For now, we will just hide/show all cards to demonstrate the filter mechanism
+    // 6. PROPER FILTERING MECHANISM INTEGRATION
+    const checkActiveFilters = () => {
+        const activeTechs = Array.from(checkboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.getAttribute('data-tech'));
+        
+        // If no filters are active, show all projects
+        if (activeTechs.length === 0) {
             projectCards.forEach(card => {
-                card.style.opacity = '0.3'; // Dim cards when filtering is active
-                card.style.pointerEvents = 'none'; 
+                card.style.display = 'block';
             });
-            // (A proper filtering mechanism would be integrated here)
+            return;
+        }
+
+        // Filter the projects
+        projectCards.forEach(card => {
+            const cardTechs = card.getAttribute('data-tech').split(' ');
+            let matches = false;
+
+            // Check if ANY of the card's tech stacks match ANY of the active filters
+            for (let filter of activeTechs) {
+                if (cardTechs.includes(filter)) {
+                    matches = true;
+                    break;
+                }
+            }
+
+            card.style.display = matches ? 'block' : 'none';
         });
+    };
+
+    // Attach the filter checking function to all checkbox changes
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', checkActiveFilters);
     });
 
 });
