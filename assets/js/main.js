@@ -15,6 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const noResultsMessage = document.getElementById('no-results-message');
     const totalH2 = document.getElementById('total-projects-h2'); 
 
+    // NEW FIX: Run the filtering logic once to initialize the count and state
+    checkActiveFilters(); 
+    });
+
 
     // ... other variables ...
     
