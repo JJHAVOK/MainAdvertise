@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         // 2. SEND DATA TO API GATEWAY INVOKE URL
-        const API_ENDPOINT = "YOUR_API_GATEWAY_INVOKE_URL_HERE/prod/contact"; // <<--- REPLACE THIS!
+        const API_ENDPOINT = "https://hhx0gv9kia.execute-api.us-east-1.amazonaws.com/prod"; // <<--- REPLACE THIS!
         
         try {
             const response = await fetch(API_ENDPOINT, {
