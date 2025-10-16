@@ -231,6 +231,9 @@ if (searchBtn) {
         totalH2.textContent = `Total Projects (${visibleProjectCount})`;
     }
 };
+
+        // FIX: Run the filtering logic immediately after defining it to initialize the count and state
+        checkActiveFilters();
     
     // 2. Handler for Checkbox Changes (Includes new "Show All" logic)
     const handleCheckboxChange = (event) => {
@@ -361,9 +364,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-// NEW FIX: Run the filtering logic once to initialize the count and state
-    checkActiveFilters(); 
 
 
 
