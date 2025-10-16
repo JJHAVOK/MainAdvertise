@@ -2,46 +2,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Global Elements (CRITICAL for Modals) ---
     const header = document.querySelector('.header');
     const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-    
 
     // CRITICAL: These MUST be defined here for the showModal function to work
-    const searchModal = document.getElementById('search-modal'); 
+    const searchModal = document.getElementById('search-modal');
     const detailModal = document.getElementById('project-detail-modal');
-    
+
     const projectCards = document.querySelectorAll('.project-card');
-    
 
     // CRITICAL: These must also be defined for the counter/message
     const noResultsMessage = document.getElementById('no-results-message');
-    const totalH2 = document.getElementById('total-projects-h2'); 
-
+    const totalH2 = document.getElementById('total-projects-h2');
 
 
     // ... other variables ...
-    
 
     // Checkboxes and Inputs
     const allCheckboxes = document.querySelectorAll('.projects-sidebar input[type="checkbox"]');
     const techCheckboxes = document.querySelectorAll('.projects-sidebar input[type="checkbox"]:not(#show-all-checkbox)'); // All tech boxes EXCEPT Show All
     const showAllCheckbox = document.getElementById('show-all-checkbox');
-    
 
     // Modal Inputs
     const searchBtn = document.getElementById('static-search-btn');
     const modalSearchInput = document.getElementById('modal-search-input');
-    const modalSearchButton = document.getElementById('modal-search-execute'); 
-    
+    const modalSearchButton = document.getElementById('modal-search-execute');
 
     // Elements to blur (unchanged)
     const elementsToBlur = [
-        document.body.querySelector('.header'), 
+        document.body.querySelector('.header'),
         document.body.querySelector('.projects-catalogue'),
         document.body.querySelector('.main-footer'),
         document.body.querySelector('.top-bar'),
         document.body.querySelector('.projects-hero'),
         document.body.querySelector('.breadcrumb-container'),
         document.body.querySelector('.story-projects')
-    ].filter(el => el); 
+    ].filter(el => el);
 
 
     // --- UTILITY FUNCTIONS (Modal, Scroll, etc.) ---
@@ -56,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modalElement.classList.add('open-modal');
         toggleBlur(true);
         if (scrollToTopBtn) scrollToTopBtn.style.display = 'none';
-        document.body.style.overflow = 'hidden'; 
+        document.body.style.overflow = 'hidden';
     };
 
     const hideModal = (modalElement) => {
@@ -70,16 +64,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
-    
-    
+
+
     // --- CORE FUNCTIONALITY ---
-    
+
     // 1. Sticky Navigation & Scroll Button (Unchanged)
     window.addEventListener('scroll', () => {
         if (header) {
             header.classList.toggle('scrolled', window.scrollY > 50);
         }
-        
+
         if (scrollToTopBtn) {
             const modalOpen = (detailModal && detailModal.classList.contains('open-modal')) || (searchModal && searchModal.classList.contains('open-modal'));
             if (!modalOpen) {
@@ -95,48 +89,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. Search Modal Control (Open listener) - MODIFIED
-if (searchBtn) {
-    searchBtn.addEventListener('click', () => {
-        
-        // 1. UNCHECK all sidebar filtering boxes (REQUIRED FOR RESET)
-        allCheckboxes.forEach(cb => {
-            cb.checked = false;
+    // 3. Search Modal Control (Open listener)
+    if (searchBtn) {
+        searchBtn.addEventListener('click', () => {
+
+            // 1. UNCHECK all sidebar filtering boxes (REQUIRED FOR RESET)
+            allCheckboxes.forEach(cb => {
+                cb.checked = false;
+            });
+
+            // 2. Clear the search input field (REQUIRED FOR RESET)
+            if (modalSearchInput) {
+                modalSearchInput.value = '';
+            }
+
+            // 3. Run the filter to show all projects behind the modal
+            checkActiveFilters();
+
+            // 4. Finally, show the modal and focus
+            showModal(searchModal);
+            if (modalSearchInput) modalSearchInput.focus();
         });
-
-        // 2. Clear the search input field (REQUIRED FOR RESET)
-        if (modalSearchInput) {
-            modalSearchInput.value = '';
-        }
-        
-        // 3. Run the filter to show all projects behind the modal
-        checkActiveFilters(); 
-
-        // 4. Finally, show the modal and focus
-        showModal(searchModal);
-        if (modalSearchInput) modalSearchInput.focus();
-    });
-}
+    }
 
     // 4. Project Detail Modal Control (FIXED: Re-attached click listener)
     if (projectCards.length > 0) {
         projectCards.forEach(card => {
             card.addEventListener('click', () => {
-                
-                if (!detailModal) return; 
+
+                if (!detailModal) return;
 
                 // --- Content Injection Logic (Unchanged) ---
                 const projectId = card.getAttribute('data-id');
                 const projectTitle = card.querySelector('h3').textContent;
                 const projectTech = card.querySelector('.tech-stack').textContent;
                 const projectCategory = card.getAttribute('data-category');
-                
+
                 const modalContent = document.getElementById('project-modal-content');
                 if (modalContent) {
                     modalContent.querySelector('h2').textContent = projectTitle;
                     modalContent.querySelector('.modal-tech-stack').textContent = projectTech;
                     modalContent.querySelector('.modal-category').textContent = projectCategory.toUpperCase().replace('-', ' ');
-                    
+
                     const projectLink = modalContent.querySelector('.modal-project-link');
                     if (projectLink) {
                         projectLink.href = `project-page-${projectId}.html`;
@@ -149,7 +143,7 @@ if (searchBtn) {
 
     // 5. Global Modal Closing Functionality (Unchanged)
     document.addEventListener('click', (event) => {
-        
+
         const closeBtn = event.target.closest('.close-btn');
         if (closeBtn) {
             const closeTarget = closeBtn.getAttribute('data-close-target');
@@ -160,7 +154,7 @@ if (searchBtn) {
             }
             return;
         }
-        
+
         if (searchModal && searchModal.classList.contains('open-modal') && event.target === searchModal) {
             hideModal(searchModal);
         }
@@ -175,13 +169,13 @@ if (searchBtn) {
     const checkActiveFilters = () => {
     // No local declarations here, relying on the globally defined variables:
     // noResultsMessage and totalH2
-    
+
     const activeTechs = Array.from(allCheckboxes)
         .filter(cb => cb.checked)
         .map(cb => cb.getAttribute('data-tech').toLowerCase());
-        
+
     const searchTerm = modalSearchInput ? modalSearchInput.value.toLowerCase().trim() : '';
-    
+
     let visibleProjectCount = 0; // Initialize a counter
 
     projectCards.forEach(card => {
@@ -192,7 +186,7 @@ if (searchBtn) {
 
         // --- Filter by Checkboxes (Tech) ---
         if (activeTechs.length === 0 || activeTechs.includes('all')) {
-            matchesTechFilter = true; 
+            matchesTechFilter = true;
         } else {
             matchesTechFilter = activeTechs.some(filter => cardTechs.includes(filter));
         }
@@ -205,18 +199,18 @@ if (searchBtn) {
             const techMatch = cardTechs.some(tech => tech.includes(searchTerm));
             matchesSearchTerm = nameMatch || techMatch;
         }
-        
+
         // Final: Determine visibility and count
         const isVisible = (matchesTechFilter && matchesSearchTerm);
         card.style.display = isVisible ? 'block' : 'none';
-        
+
         if (isVisible) {
             visibleProjectCount++; // Increment counter if project is shown
         }
     });
-    
+
     // --- Update UI after filtering ---
-    
+
     // 1. Logic to show/hide the "No Results" message
     if (noResultsMessage) {
         if (visibleProjectCount === 0) {
@@ -225,20 +219,20 @@ if (searchBtn) {
             noResultsMessage.style.display = 'none';
         }
     }
-    
+
     // 2. Update the Total Projects H2 count
     if (totalH2) {
         totalH2.textContent = `Total Projects (${visibleProjectCount})`;
     }
-};
+    };
 
-        // FIX: Run the filtering logic immediately after defining it to initialize the count and state
-        checkActiveFilters();
-    
+    // **REMOVED THE DUPLICATE/EARLY CALL HERE: checkActiveFilters();**
+
+
     // 2. Handler for Checkbox Changes (Includes new "Show All" logic)
     const handleCheckboxChange = (event) => {
         const checkboxClicked = event.target;
-        
+
         // Logic for "Show All" checkbox
         if (checkboxClicked.id === 'show-all-checkbox') {
             if (checkboxClicked.checked) {
@@ -254,9 +248,9 @@ if (searchBtn) {
 
         // Always clear the search box when a sidebar filter is used
         if (modalSearchInput) {
-            modalSearchInput.value = ''; 
+            modalSearchInput.value = '';
         }
-        
+
         // Run the main filtering logic
         checkActiveFilters();
     };
@@ -264,16 +258,16 @@ if (searchBtn) {
     // 3. Search Modal Execution
     const executeModalSearch = () => {
     // 1. Triggers the filtering based on the text input
-    checkActiveFilters(); 
-    
+    checkActiveFilters();
+
     // 2. NEW: Resets the text input field
     if (modalSearchInput) {
         modalSearchInput.value = '';
     }
-    
+
     // 3. Closes the modal
-    hideModal(searchModal); 
-};
+    hideModal(searchModal);
+    };
 
 // Attach listeners for the search modal
 
@@ -294,28 +288,30 @@ if (modalSearchInput) {
 
     // Checkbox listeners (MODIFIED to use handleCheckboxChange)
     allCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', handleCheckboxChange); 
+        checkbox.addEventListener('change', handleCheckboxChange);
     });
+    
+    // **FIXED INITIAL STATE: Run the filtering logic once the listeners are attached**
+    checkActiveFilters();
 
-// --- SEARCH & FILTERING LOGIC (REPLACEMENT BLOCK ENDS HERE) ---
 
     // --- ACCORDION FUNCTIONALITY (Unchanged) ---
     const accordionHeaders = document.querySelectorAll('.accordion-header');
-    
+
     const initializeAccordion = () => {
         if (accordionHeaders.length > 0) {
             const firstHeader = accordionHeaders[0];
             const firstPanel = document.getElementById(firstHeader.getAttribute('data-target'));
-            
+
             if (firstHeader.getAttribute('aria-expanded') === 'true' && firstPanel) {
                 firstPanel.classList.add('open');
                 setTimeout(() => {
-                    firstPanel.style.maxHeight = firstPanel.scrollHeight + "px"; 
-                }, 50); 
+                    firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
+                }, 50);
             }
         }
     };
-    
+
     if (accordionHeaders.length > 0) {
         window.addEventListener('load', initializeAccordion);
     }
@@ -334,82 +330,12 @@ if (modalSearchInput) {
                     p.style.maxHeight = '0';
                 }
             });
-            
+
             if (!isExpanded && panel) {
                 header.setAttribute('aria-expanded', 'true');
                 panel.classList.add('open');
-                panel.style.maxHeight = panel.scrollHeight + "px"; 
+                panel.style.maxHeight = panel.scrollHeight + "px";
             }
         });
     });
 });
-
-
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    const contactForm = document.getElementById('contactForm');
-    
-    if (contactForm) {
-    contactForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const submitButton = this.querySelector('.submit-btn');
-        const loginMessage = document.getElementById('loginMessage'); // Optional error message area
-
-        submitButton.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin"></i>';
-        submitButton.disabled = true;
-        
-        // 1. COLLECT DATA
-        const formData = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            company: document.getElementById('company').value,
-            service: document.getElementById('service').value,
-            message: document.getElementById('message').value
-        };
-
-        // 2. SEND DATA TO API GATEWAY INVOKE URL
-        const API_ENDPOINT = "https://hhx0gv9kia.execute-api.us-east-1.amazonaws.com/prod"; // <<--- REPLACE THIS!
-        
-        try {
-            const response = await fetch(API_ENDPOINT, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            });
-
-            if (response.ok) {
-                // 3. SUCCESS HANDLER
-                alert('Success! Your inquiry has been sent. We will contact you shortly.');
-                contactForm.reset();
-                submitButton.innerHTML = 'Sent! <i class="fas fa-check"></i>';
-            } else {
-                // 4. ERROR HANDLER
-                const errorData = await response.json();
-                alert(`Submission Failed: ${errorData.message || 'Server Error'}`);
-                submitButton.innerHTML = 'Failed <i class="fas fa-times"></i>';
-            }
-
-        } catch (error) {
-            console.error('Network Error:', error);
-            alert('A network error occurred. Please try again.');
-            submitButton.innerHTML = 'Send Inquiry <i class="fas fa-paper-plane"></i>';
-        } finally {
-            setTimeout(() => {
-                submitButton.innerHTML = 'Send Inquiry <i class="fas fa-paper-plane"></i>';
-                submitButton.disabled = false;
-            }, 3000);
-        }
-    });
-}
-
-
-
-
-
-
-
