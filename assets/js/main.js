@@ -352,14 +352,60 @@ document.addEventListener('DOMContentLoaded', () => {
     const contactForm = document.getElementById('contactForm');
     
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // ... the rest of the form submission/simulation code ...
-            
-        });
-    }
-});
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitButton = this.querySelector('.submit-btn');
+        const loginMessage = document.getElementById('loginMessage'); // Optional error message area
+
+        submitButton.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin"></i>';
+        submitButton.disabled = true;
+        
+        // 1. COLLECT DATA
+        const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            company: document.getElementById('company').value,
+            service: document.getElementById('service').value,
+            message: document.getElementById('message').value
+        };
+
+        // 2. SEND DATA TO API GATEWAY INVOKE URL
+        const API_ENDPOINT = "YOUR_API_GATEWAY_INVOKE_URL_HERE/prod/contact"; // <<--- REPLACE THIS!
+        
+        try {
+            const response = await fetch(API_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                // 3. SUCCESS HANDLER
+                alert('Success! Your inquiry has been sent. We will contact you shortly.');
+                contactForm.reset();
+                submitButton.innerHTML = 'Sent! <i class="fas fa-check"></i>';
+            } else {
+                // 4. ERROR HANDLER
+                const errorData = await response.json();
+                alert(`Submission Failed: ${errorData.message || 'Server Error'}`);
+                submitButton.innerHTML = 'Failed <i class="fas fa-times"></i>';
+            }
+
+        } catch (error) {
+            console.error('Network Error:', error);
+            alert('A network error occurred. Please try again.');
+            submitButton.innerHTML = 'Send Inquiry <i class="fas fa-paper-plane"></i>';
+        } finally {
+            setTimeout(() => {
+                submitButton.innerHTML = 'Send Inquiry <i class="fas fa-paper-plane"></i>';
+                submitButton.disabled = false;
+            }, 3000);
+        }
+    });
+}
 
 
 
